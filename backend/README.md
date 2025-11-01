@@ -59,3 +59,107 @@ backend/
 
 - **nodemon**: Auto-restart server during development
 
+## API Endpoints
+
+### Authentication
+
+#### Register New User
+```http
+POST /api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "SecurePass123"
+}
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "User registered successfully",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "data": {
+    "user": {
+      "id": "690644dec35cb04bb9f182fb",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "user"
+    }
+  }
+}
+```
+
+#### Login User
+```http
+POST /api/auth/signin
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "SecurePass123"
+}
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "data": {
+    "user": {
+      "id": "690644dec35cb04bb9f182fb",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "user"
+    }
+  }
+}
+```
+
+#### Get Current User Profile (Protected)
+```http
+GET /api/auth/me
+Authorization: Bearer <token>
+```
+
+Response:
+```json
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": "690644dec35cb04bb9f182fb",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "user",
+      "createdAt": "2025-11-01T17:35:26.266Z"
+    }
+  }
+}
+```
+
+## Validation Rules
+
+### Signup Validation
+- **name**: Required, 2-50 characters
+- **email**: Required, valid email format
+- **password**: Required, minimum 6 characters, must contain at least one uppercase letter, one lowercase letter, and one number
+
+### Signin Validation
+- **email**: Required, valid email format
+- **password**: Required
+
+## Security Features
+
+- Passwords are hashed using bcryptjs (salt rounds: 12)
+- JWT tokens for authentication
+- Protected routes require valid Bearer token
+- Role-based access control support (user, admin)
+- Input validation using express-validator
+- CORS enabled for frontend
+- Passwords excluded from API responses
+
