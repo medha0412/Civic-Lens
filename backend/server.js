@@ -18,6 +18,11 @@ app.use(cors({
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/complaints', require('./routes/complaintRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+
+// Serve uploaded files statically
+app.use('/uploads', express.static('uploads'));
 
 // Basic route
 app.get('/', (req, res) => {

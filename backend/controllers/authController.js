@@ -13,13 +13,13 @@ const generateToken = (id) => {
 // @access  Public
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, city } = req.body;
 
     // Validate input
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !city) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide name, email, and password'
+        message: 'Please provide name, email, password, and city'
       });
     }
 
@@ -36,7 +36,8 @@ exports.signup = async (req, res) => {
     const user = await User.create({
       name,
       email,
-      password
+      password,
+      city
     });
 
     // Generate token
@@ -51,6 +52,7 @@ exports.signup = async (req, res) => {
           id: user._id,
           name: user.name,
           email: user.email,
+          city: user.city,
           role: user.role
         }
       }
@@ -145,6 +147,7 @@ exports.getMe = async (req, res) => {
           id: user._id,
           name: user.name,
           email: user.email,
+          city: user.city,
           role: user.role,
           createdAt: user.createdAt
         }
