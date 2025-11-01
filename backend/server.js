@@ -17,9 +17,7 @@ app.use(cors({
 }));
 
 // Routes
-// TODO: Add your routes here
-// app.use('/api/users', require('./routes/userRoutes'));
-// app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/auth', require('./routes/authRoutes'));
 
 // Basic route
 app.get('/', (req, res) => {
