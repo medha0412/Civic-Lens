@@ -1,5 +1,6 @@
 import { Button } from "./ui/button"
 import { ArrowRight, ChevronRight } from "lucide-react"
+import { Link } from "react-router-dom"
 import hero from "../assets/banner.jpg"
 export function HeroSection() {
   return (
@@ -25,6 +26,7 @@ export function HeroSection() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+            <Link to="/signup">
             <Button
               size="lg"
               className="bg-accent h-10 hover:bg-accent/90 text-accent-foreground rounded-full px-8 animate-slide-up-2 transition-all duration-300 hover:scale-105 shadow-lg glow-button-primary font-semibold"
@@ -32,6 +34,9 @@ export function HeroSection() {
               Get Started
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
+            </Link>
+            <Link to="/signup">
+
             <Button
               variant="outline"
               size="lg"
@@ -40,6 +45,7 @@ export function HeroSection() {
               Learn More
               <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
+            </Link>
           </div>
         </div>
       </div>
