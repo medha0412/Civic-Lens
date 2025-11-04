@@ -26,18 +26,19 @@ export function Navbar() {
             >
               About
             </a>
+                        <a
+              href="#how-it-works"
+              className="text-background text-xl hover:text-accent transition-colors duration-300 "
+            >
+              How It Works
+            </a>
             <a
               href="#categories"
               className="text-background text-xl hover:text-accent transition-colors duration-300 "
             >
               Categories
             </a>
-            <a
-              href="#how-it-works"
-              className="text-background text-xl hover:text-accent transition-colors duration-300 "
-            >
-              How It Works
-            </a>
+
             <a
               href="#contact"
               className="text-background text-xl hover:text-accent transition-colors duration-300 "
