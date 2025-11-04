@@ -37,15 +37,7 @@ cd backend
 npm install
 ```
 
-3. Create a `.env` file in the backend directory:
-```
-MONGODB_URI=mongodb://localhost:27017/civic-lens
-PORT=5000
-NODE_ENV=development
-JWT_SECRET=your_jwt_secret_key_here_change_in_production
-JWT_EXPIRE=30d
-FRONTEND_URL=http://localhost:3000
-```
+
 
 4. Run the development server:
 ```bash
