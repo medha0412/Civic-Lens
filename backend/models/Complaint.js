@@ -30,6 +30,14 @@ const complaintSchema = new mongoose.Schema({
     enum: ['pending', 'in-progress', 'resolved'],
     default: 'pending'
   },
+
+  statusTimestamps: {
+    pendingAt: {type: Date, default: Date.now},
+    inProgressAt: {type: Date},
+    resolvedAt: {type: Date}
+  },
+
+
   city: {
     type: String,
     required: true,

@@ -50,6 +50,16 @@ exports.updateComplaintStatus = async (req, res) => {
       });
     }
 
+    const updateFeilds = { status };
+
+    if(status === 'pending') {
+      updateFeilds['statusTimestamps.pendingAt'] = new Date();
+    } else if(status === 'in-progress') {
+      updateFeilds['statusTimestamps.inProgressAt'] = new Date();
+    } else if(status === 'resolved') {
+      updateFeilds['statusTimestamps.resolvedAt'] = new Date();
+    }
+
     // Update complaint
     const complaint = await Complaint.findByIdAndUpdate(
       id,
@@ -69,7 +79,7 @@ exports.updateComplaintStatus = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Complaint status updated successfully',
+      message: `Complaint status updated to "${status}" successfully`,
       data: {
         complaint
       }
