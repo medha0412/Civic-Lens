@@ -22,31 +22,31 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-8">
             <a
               href="#about"
-              className="text-background hover:text-accent transition-colors duration-300 font-medium"
+              className="text-background hover:text-accent transition-colors text-xl duration-300 "
             >
               About
             </a>
             <a
               href="#categories"
-              className="text-background hover:text-accent transition-colors duration-300 font-medium"
+              className="text-background text-xl hover:text-accent transition-colors duration-300 "
             >
               Categories
             </a>
             <a
               href="#how-it-works"
-              className="text-background hover:text-accent transition-colors duration-300 font-medium"
+              className="text-background text-xl hover:text-accent transition-colors duration-300 "
             >
               How It Works
             </a>
             <a
               href="#contact"
-              className="text-background hover:text-accent transition-colors duration-300 font-medium"
+              className="text-background text-xl hover:text-accent transition-colors duration-300 "
             >
               Contact
             </a>
           </div>
 
-          <Button className="bg-primary hover:bg-primary/90 text-background rounded-full transition-all duration-300 hover:scale-105 shadow-lg glow-button-primary font-semibold">
+          <Button className="bg-primary h-12 w-24 text-xl hover:bg-primary/90 text-background rounded-full transition-all duration-300 hover:scale-105 shadow-lg glow-button-primary font-semibold">
             Sign Up
           </Button>
         </div>

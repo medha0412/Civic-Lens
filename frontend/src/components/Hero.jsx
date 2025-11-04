@@ -27,7 +27,7 @@ export function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
             <Button
               size="lg"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full px-8 animate-slide-up-2 transition-all duration-300 hover:scale-105 shadow-lg glow-button-primary font-semibold"
+              className="bg-accent h-10 hover:bg-accent/90 text-accent-foreground rounded-full px-8 animate-slide-up-2 transition-all duration-300 hover:scale-105 shadow-lg glow-button-primary font-semibold"
             >
               Get Started
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -35,7 +35,7 @@ export function HeroSection() {
             <Button
               variant="outline"
               size="lg"
-              className="rounded-full px-8 border-2 border-accent/40 hover:bg-accent/10 bg-transparent animate-slide-up-3 transition-all duration-300 hover:scale-105 text-background hover:border-accent shadow-lg hover:shadow-xl font-semibold"
+              className="rounded-full h-10 px-8 border-2 border-accent/40 hover:bg-accent/10 bg-transparent animate-slide-up-3 transition-all duration-300 hover:scale-105 text-background hover:border-accent shadow-lg hover:shadow-xl font-semibold"
             >
               Learn More
               <ChevronRight className="w-4 h-4 ml-2" />
