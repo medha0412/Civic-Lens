@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 export  function Signup() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,10 +19,18 @@ export  function Signup() {
     if (error) setError('');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!formData.name || !formData.email || !formData.city || !formData.password) {
       setError('Please fill in all fields before registering');
       return;
+    }
+    try {
+      const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
+      alert(res.data.message);
+      navigate('/map');
+    } catch (error) {
+      alert(error.response?.data?.message || 'sign up failed');
     }
     // Form is valid, proceed with registration
     console.log("Form submitted", formData);
@@ -33,7 +43,9 @@ export  function Signup() {
       <h1 className="text-4xl font-bold mb-8 text-white">
         Create Your Account
       </h1>
-
+       <form
+        onSubmit={handleSubmit}
+      >
       {/* Signup Form */}
       <div className="bg-white/5 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-white/10">
         {/* Error Message */}
@@ -107,12 +119,13 @@ export  function Signup() {
         {/* Register Button */}
         <button
           onClick={handleSubmit}
+          type="submit"
           className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-cyan-500 transition"
         >
           Register
         </button>
       </div>
-
+        <div className="text-center">
       {/* Bottom Text */}
       <p className="mt-6 text-lg text-white">
         Already have an account?{" "}
@@ -120,6 +133,8 @@ export  function Signup() {
           Log In
         </a>
       </p>
+      </div>
+      </form>
     </div>
   );
 }

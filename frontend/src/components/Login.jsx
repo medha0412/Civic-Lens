@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom"
 
 export  function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -15,10 +18,18 @@ export  function Login() {
     if (error) setError('');
   };
 
-  const handleSubmit = () => {
-    if ( !formData.email || !formData.password) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.email || !formData.password) {
       setError('Please fill in all fields');
       return;
+    }
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/signin", formData);
+      alert(res.data.message);
+      navigate('/map');
+    } catch (error) {
+      alert(error.response?.data?.message || "login failed");
     }
     // Form is valid, proceed with registration
     console.log("Form submitted", formData);
@@ -31,7 +42,9 @@ export  function Login() {
       <h1 className="text-4xl font-bold mb-8 text-white">
          Login
       </h1>
-
+          <form
+        onSubmit={handleSubmit}
+      ></form>
       {/* Signup Form */}
       <div className="bg-white/5 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-white/10">
         {/* Error Message */}
@@ -90,6 +103,7 @@ export  function Login() {
         {/* Register Button */}
         <button
           onClick={handleSubmit}
+          type="submit"
           className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-cyan-500 transition"
         >
           Login
