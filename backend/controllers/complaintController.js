@@ -1,10 +1,11 @@
-const Complaint = require('../models/Complaint');
-const User = require('../models/User');
+import Complaint from '../models/Complaint.js';
+import User from '../models/User.js';
+import { classifyComplaint } from '../utils/aiClassifier.js';
 
 // @desc    Create a new complaint
 // @route   POST /api/complaints
 // @access  Private
-exports.createComplaint = async (req, res) => {
+export const createComplaint = async (req, res) => {
   try {
     const { message, latitude, longitude } = req.body;
 
@@ -33,9 +34,12 @@ exports.createComplaint = async (req, res) => {
       });
     }
 
+    const category = await classifyComplaint(message);
+
     // Create complaint
     const complaint = await Complaint.create({
       message,
+      category,
       photo: req.file ? `/uploads/complaints/${req.file.filename}` : null,
       location: {
         latitude: parseFloat(latitude),
@@ -67,7 +71,7 @@ exports.createComplaint = async (req, res) => {
 // @desc    Get all complaints by logged in user
 // @route   GET /api/complaints
 // @access  Private
-exports.getMyComplaints = async (req, res) => {
+export const getMyComplaints = async (req, res) => {
   try {
     const complaints = await Complaint.find({ createdBy: req.user.id })
       .sort({ createdAt: -1 })

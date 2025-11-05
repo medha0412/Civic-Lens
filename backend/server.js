@@ -1,7 +1,7 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const connectDB = require('./config/db');
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import connectDB from './config/db.js';
 
 // Load environment variables
 dotenv.config();
@@ -17,9 +17,13 @@ app.use(cors({
 }));
 
 // Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/complaints', require('./routes/complaintRoutes'));
-app.use('/api/admin', require('./routes/adminRoutes'));
+import authRoutes from './routes/authRoutes.js';
+import complaintRoutes from './routes/complaintRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+
+app.use('/api/auth', authRoutes);
+app.use('/api/complaints', complaintRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Serve uploaded files statically
 app.use('/uploads', express.static('uploads'));

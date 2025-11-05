@@ -1,7 +1,7 @@
-const { body, validationResult } = require('express-validator');
+import { body, validationResult } from 'express-validator';
 
 // Validation result handler
-exports.validate = (req, res, next) => {
+export const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -14,7 +14,7 @@ exports.validate = (req, res, next) => {
 };
 
 // Signup validation rules
-exports.validateSignup = [
+export const validateSignup = [
   body('name')
     .trim()
     .notEmpty()
@@ -38,7 +38,7 @@ exports.validateSignup = [
 ];
 
 // Signin validation rules
-exports.validateSignin = [
+export const validateSignin = [
   body('email')
     .trim()
     .notEmpty()

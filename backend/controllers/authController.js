@@ -1,5 +1,5 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+import User from '../models/User.js';
+import jwt from 'jsonwebtoken';
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -11,7 +11,7 @@ const generateToken = (id) => {
 // @desc    Register new user
 // @route   POST /api/auth/signup
 // @access  Public
-exports.signup = async (req, res) => {
+export const signup = async (req, res) => {
   try {
     const { name, email, password, city } = req.body;
 
@@ -69,7 +69,7 @@ exports.signup = async (req, res) => {
 // @desc    Login user
 // @route   POST /api/auth/signin
 // @access  Public
-exports.signin = async (req, res) => {
+export const signin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -129,7 +129,7 @@ exports.signin = async (req, res) => {
 // @desc    Get current logged in user
 // @route   GET /api/auth/me
 // @access  Private
-exports.getMe = async (req, res) => {
+export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 

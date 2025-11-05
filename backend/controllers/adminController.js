@@ -1,9 +1,9 @@
-const Complaint = require('../models/Complaint');
+import Complaint from '../models/Complaint.js';
 
 // @desc    Get all complaints (Admin only)
 // @route   GET /api/admin/complaints
 // @access  Private/Admin
-exports.getAllComplaints = async (req, res) => {
+export const getAllComplaints = async (req, res) => {
   try {
     const complaints = await Complaint.find()
       .populate('createdBy', 'name email city')
@@ -29,7 +29,7 @@ exports.getAllComplaints = async (req, res) => {
 // @desc    Update complaint status
 // @route   PATCH /api/admin/complaints/:id
 // @access  Private/Admin
-exports.updateComplaintStatus = async (req, res) => {
+export const updateComplaintStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;

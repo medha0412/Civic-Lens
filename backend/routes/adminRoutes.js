@@ -1,10 +1,8 @@
-const express = require('express');
+import express from 'express';
+import { protect, authorize } from '../middleware/auth.js';
+import { getAllComplaints, updateComplaintStatus } from '../controllers/adminController.js';
+
 const router = express.Router();
-const { protect, authorize } = require('../middleware/auth');
-const {
-  getAllComplaints,
-  updateComplaintStatus
-} = require('../controllers/adminController');
 
 // All admin routes are protected and require admin role
 router.use(protect);
@@ -20,5 +18,5 @@ router.get('/complaints', getAllComplaints);
 // @access  Private/Admin
 router.patch('/complaints/:id', updateComplaintStatus);
 
-module.exports = router;
+export default router;
 

@@ -1,21 +1,21 @@
-const express = require('express');
+import express from 'express';
+import { protect } from '../middleware/auth.js';
+import { createComplaint, getMyComplaints } from '../controllers/complaintController.js';
+import upload from '../config/multer.js';
+
 const router = express.Router();
-const { protect } = require('../middleware/auth');
-const { createComplaint, getMyComplaints } = require('../controllers/complaintController');
-const upload = require('../config/multer');
 
 // All complaint routes are protected
 router.use(protect);
 
-// @desc    Create a new complaint
-// @route   POST /api/complaints
-// @access  Private
-router.post('/', upload.single('photo'), createComplaint);
+
+//router.post('/', upload.single('photo'), createComplaint);
+router.post('/', protect,  createComplaint);
 
 // @desc    Get all complaints by logged in user
 // @route   GET /api/complaints
 // @access  Private
 router.get('/', getMyComplaints);
 
-module.exports = router;
+export default router;
 
