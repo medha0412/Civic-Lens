@@ -20,12 +20,7 @@ export function Navbar() {
 
           {/* Navigation Links - Hidden on mobile */}
           <div className="hidden md:flex items-center gap-8">
-            <a
-              href="#about"
-              className="text-background hover:text-accent transition-colors text-xl duration-300 "
-            >
-              About
-            </a>
+            
                         <a
               href="#how-it-works"
               className="text-background text-xl hover:text-accent transition-colors duration-300 "
@@ -45,6 +40,14 @@ export function Navbar() {
             >
               Contact
             </a>
+            <Link to="/knowus">
+            <Button
+              
+              className="text-background hover:text-accent transition-colors text-xl duration-300 "
+            >
+              Know Us 
+            </Button>
+            </Link>
           </div>
           <Link to="/signup">
           <Button className="bg-primary h-12 w-24 text-xl hover:bg-primary/90 text-background rounded-full transition-all duration-300 hover:scale-105 shadow-lg glow-button-primary font-semibold"
