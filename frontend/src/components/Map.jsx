@@ -1,7 +1,9 @@
 import React ,{ useState, useEffect} from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import axios from "axios";
+
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -13,76 +15,50 @@ L.Icon.Default.mergeOptions({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
-
-export function Map(){
-     const [position, setPosition] = useState(null);
+export function Map({ city }) {
+  const [position, setPosition] = useState(null);
 
   useEffect(() => {
-    if ("geolocation" in navigator) {
-     const watchId = navigator.geolocation.watchPosition(
-  (pos) => {
-    const { latitude, longitude } = pos.coords;
-    console.log("Updated location:", latitude, longitude);
-    setPosition([latitude, longitude]);
-  },
-  (err) => {
-    console.error("Geolocation error:", err);
-    alert("Unable to fetch location. Please enable precise location access.");
-  },
-  {
-    enableHighAccuracy: true, // forces GPS usage if available
-    timeout: 10000,           // 10 s timeout
-    maximumAge: 0,            // always fresh
-  }
-);
-
-return () => navigator.geolocation.clearWatch(watchId);
-
-    } else {
-      setError("Geolocation not supported by your browser.");
-    }
-  }, []);
-   
-   
-  useEffect(() => {
-    // Request user's current geolocation
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          console.log("User Location:", latitude, longitude);
-          setPosition([latitude, longitude]);
-        },
-        (err) => {
-          console.error("Geolocation Error:", err);
-          alert("Unable to fetch location. Please enable location access.");
+    async function fetchCityCoords() {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?city=${city}&format=json`
+        );
+        const data = await response.json();
+        if (data.length > 0) {
+          const { lat, lon } = data[0];
+          setPosition([parseFloat(lat), parseFloat(lon)]);
+        } else {
+          console.error("City not found:", city);
         }
-      );
-    } else {
-      alert("Geolocation is not supported by your browser.");
+      } catch (error) {
+        console.error("Error fetching city location:", error);
+      }
     }
-  }, []);
+    fetchCityCoords();
+  }, [city]);
 
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div className="h-screen w-full bg-gray-900 text-white flex flex-col items-center justify-center">
+      <h1 className="text-3xl font-bold mb-6">
+        Map of {city}
+      </h1>
       {position ? (
         <MapContainer
           center={position}
-          zoom={14}
-          style={{ height: "100%", width: "100%" }}
+          zoom={12}
+          style={{ height: "70vh", width: "80vw", borderRadius: "16px" }}
         >
           <TileLayer
+            attribution='&copy; OpenStreetMap contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
           />
           <Marker position={position}>
-            <Popup>Your current location</Popup>
+            <Popup>{city}</Popup>
           </Marker>
         </MapContainer>
       ) : (
-        <p style={{ textAlign: "center", marginTop: "2rem" }}>
-          Fetching your live location...
-        </p>
+        <p>Loading map of {city}...</p>
       )}
     </div>
   );

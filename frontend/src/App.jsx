@@ -27,7 +27,7 @@ function App() {
 
             <Route path='/signup' element={<Signup/>}/>
             <Route path='/login' element={<Login/>}/>
-            <Route path='/map' element={<Map/>}/>
+            <Route path='/map' element={<Map city="Dewas" />}/>
           </Routes>
         </Router>
 
