@@ -27,10 +27,23 @@ export  function Login() {
     try {
       const res = await axios.post("http://localhost:5000/api/auth/signin", formData);
       alert(res.data.message);
-      navigate('/map');
+
+      const user = res.data.data.user;
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", res.data.token);
+
+      if (user.role === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/map");
+      }
+      
     } catch (error) {
       alert(error.response?.data?.message || "login failed");
     }
+
+
+
     // Form is valid, proceed with registration
     console.log("Form submitted", formData);
     setError('');

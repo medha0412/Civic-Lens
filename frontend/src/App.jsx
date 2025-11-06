@@ -9,6 +9,9 @@ import { Signup } from "./components/Signup"
 import { Login } from './components/Login'
 import { Map } from './components/Map'
 import { KnowUs} from './components/Knowus'
+import AdminDashboard from './components/AdminDashboard'
+
+
 function App() {
   return (
 
@@ -27,7 +30,9 @@ function App() {
             <Route path='/signup' element={<Signup/>}/>
             <Route path='/login' element={<Login/>}/>
 
-            <Route path='/map' element={<Map city="Dewas" />}/>
+            <Route path='/admin-dashboard' element= {<AdminDashboard />} />
+            <Route path='/map' element={<Map />}/>
+            
 
             <Route path='/knowus' element={<KnowUs />}/>
           </Routes>
