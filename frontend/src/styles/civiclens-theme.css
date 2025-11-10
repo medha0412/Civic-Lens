@@ -1,0 +1,91 @@
+/* src/styles/civiclens-theme.css
+   Scoped CivicLens admin theme — safe to import only in Admin page.
+   This file intentionally does NOT contain @tailwind directives.
+*/
+
+.civiclens-theme {
+  /* Light fallback (if app uses light mode) */
+  --background: #f9fafb;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #081a2b;           /* deep blue used as header bg (light fallback) */
+  --primary-foreground: #ffffff;
+  --accent: #00d1b2;            /* vibrant teal */
+  --accent-foreground: #081a2b;
+  --muted: #e2e8f0;
+  --muted-foreground: #475569;
+  --border: #d1d5db;
+  --input: #f1f5f9;
+  --ring: #00d1b2;
+  --sidebar: #f9fafb;
+  --sidebar-foreground: #0f172a;
+  --sidebar-border: #d1d5db;
+  --radius: 0.625rem;
+}
+
+/* Dark-mode when only this section should use dark palette.
+   If your app toggles dark by adding .dark to <html> or <body>,
+   use .civiclens-theme.dark to scope the dark overrides to admin.
+*/
+.civiclens-theme.dark,
+.civiclens-theme .dark {
+  --background: #081a2b;        /* required deep blue background */
+  --foreground: #ffffff;
+  --card: #0f2847;
+  --card-foreground: #ffffff;
+  --popover: #081a2b;
+  --popover-foreground: #ffffff;
+  --primary: #00d1b2;           /* primary elements become teal in dark admin */
+  --primary-foreground: #081a2b;
+  --accent: #00d1b2;
+  --accent-foreground: #081a2b;
+  --muted: #1a3a52;
+  --muted-foreground: #b0c4d4;
+  --border: #1a3a52;
+  --input: #0f2847;
+  --ring: #00d1b2;
+  --sidebar: #0f2847;
+  --sidebar-foreground: #ffffff;
+  --sidebar-border: #1a3a52;
+}
+
+/* Convenient utility helpers scoped to civiclens-theme.
+   These use the variables above — safe and non-invasive. */
+.civiclens-theme .bg-background { background-color: var(--background); }
+.civiclens-theme .text-foreground { color: var(--foreground); }
+.civiclens-theme .bg-card { background-color: var(--card); color: var(--card-foreground); }
+.civiclens-theme .btn-primary {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.75rem;
+}
+.civiclens-theme .btn-primary:hover { filter: brightness(0.95); }
+
+/* Focus/ring helpers */
+.civiclens-theme :focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 209, 178, 0.12);
+}
+
+/* small responsive niceties for admin container */
+.civiclens-theme .admin-container {
+  min-height: 100vh;
+  display: flex;
+  gap: 1rem;
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+/* keep card styling scoped */
+.civiclens-theme .complaint-card {
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.35);
+}
