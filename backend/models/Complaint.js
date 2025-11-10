@@ -58,6 +58,12 @@ const complaintSchema = new mongoose.Schema({
     trim: true
   },
 
+  area: {
+    type: String,
+    trim: true,
+    default: null
+  },
+
   createdBy: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',

@@ -7,7 +7,7 @@ import { classifyComplaint } from '../utils/aiClassifier.js';
 // @access  Private
 export const createComplaint = async (req, res) => {
   try {
-    const { message, latitude, longitude } = req.body;
+    const { message, latitude, longitude, city, area } = req.body;
 
     // Validate required fields
     if (!message) {
@@ -24,7 +24,14 @@ export const createComplaint = async (req, res) => {
       });
     }
 
-    // Get user to fetch city
+    if (!city) {
+      return res.status(400).json({
+        success: false,
+        message: 'City is required'
+      });
+    }
+
+    // Get user to verify
     const user = await User.findById(req.user.id);
 
     if (!user) {
@@ -45,7 +52,8 @@ export const createComplaint = async (req, res) => {
         latitude: parseFloat(latitude),
         longitude: parseFloat(longitude)
       },
-      city: user.city,
+      city,
+      area,
       createdBy: req.user.id
     });
 
