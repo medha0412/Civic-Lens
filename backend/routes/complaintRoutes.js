@@ -10,7 +10,7 @@ router.use(protect);
 
 
 //router.post('/', upload.single('photo'), createComplaint);
-router.post('/', protect,  createComplaint);
+router.post('/', upload.single('photo'), createComplaint);
 
 // @desc    Get all complaints by logged in user
 // @route   GET /api/complaints
