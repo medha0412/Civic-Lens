@@ -10,7 +10,8 @@ import {
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import axios from "axios";
-
+import { ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 // Fix Leaflet icon issue
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -27,6 +28,8 @@ const OPENCAGE_KEY = "a0ba57399bda41859511a5759c08c819";
 // ✅ Custom map mover — will only run when `flyTrigger` changes
 function MoveMapToCity({ coords, flyTrigger }) {
   const map = useMap();
+  
+
   useEffect(() => {
     if (coords) map.flyTo(coords, 13, { animate: true, duration: 2 });
   }, [flyTrigger]); // only re-run when city search triggers it
@@ -53,7 +56,24 @@ const [flyTrigger, setFlyTrigger] = useState(0);
   const [showPhotoOptions, setShowPhotoOptions] = useState(false);
   const fileInputRef = useRef();
   const cameraInputRef = useRef();
-
+ const navigate = useNavigate();
+  // Back Button
+  const BackButton = () => (
+    <div className="absolute top-4 left-4 z-10">
+      <button
+        onClick={() => navigate('/dashboard')}
+        className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors"
+        style={{
+          backgroundColor: 'rgba(0, 209, 178, 0.1)',
+          color: '#00D1B2',
+          border: '1px solid rgba(0, 209, 178, 0.3)',
+        }}
+      >
+        <ArrowLeft size={20} />
+        Back
+      </button>
+    </div>
+  );
   const mapRef = useRef();
 
   // 🔍 Search City
@@ -235,6 +255,7 @@ const handleCitySearch = async () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#081A2B" }}>
+      <BackButton />
       <form onSubmit={handleSubmit} className="max-w-7xl mx-auto p-6">
         {/* Header */}
         <div className="mb-8">

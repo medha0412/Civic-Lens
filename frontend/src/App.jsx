@@ -10,8 +10,8 @@ import { Login } from './components/Login'
 import { Map } from './components/Map'
 import { KnowUs} from './components/Knowus'
 import AdminDashboard from './components/AdminDashboard'
-
-
+import { Dashboard } from './components/Dashboard'
+import { YourComplains } from './components/YourComplaints'
 function App() {
   return (
 
@@ -29,10 +29,10 @@ function App() {
           />
             <Route path='/signup' element={<Signup/>}/>
             <Route path='/login' element={<Login/>}/>
-
+            <Route path='/dashboard' element ={<Dashboard />}/>
             <Route path='/admin-dashboard' element= {<AdminDashboard />} />
             <Route path='/map' element={<Map />}/>
-            
+            <Route path='/your-complaints' element={ <YourComplains />}/>
 
             <Route path='/knowus' element={<KnowUs />}/>
           </Routes>

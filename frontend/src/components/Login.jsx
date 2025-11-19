@@ -35,7 +35,7 @@ export  function Login() {
       if (user.role === "admin") {
         navigate("/admin-dashboard");
       } else {
-        navigate("/map");
+        navigate("/dashboard");
       }
       
     } catch (error) {

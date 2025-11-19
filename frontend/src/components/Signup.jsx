@@ -28,7 +28,7 @@ export  function Signup() {
     try {
       const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
       alert(res.data.message);
-      navigate('/map');
+      navigate('/dashboard');
     } catch (error) {
       alert(error.response?.data?.message || 'sign up failed');
     }
