@@ -17,7 +17,14 @@ NODE_ENV=development
 JWT_SECRET=your_jwt_secret_key_here_change_in_production
 JWT_EXPIRE=30d
 FRONTEND_URL=http://localhost:3000
+SESSION_SECRET=your_session_secret_key_here
 ```
+
+**Note**: The CORS configuration allows requests from:
+- `http://localhost:5173` (Vite dev server)
+- `http://localhost:3000` (alternative local dev)
+- `https://civiclens-major.netlify.app` (production frontend)
+- Any URL set in `FRONTEND_URL` environment variable
 
 ## Running the Server
 
