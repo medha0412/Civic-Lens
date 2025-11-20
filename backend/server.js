@@ -31,10 +31,14 @@ app.use(
     saveUninitialized: false,
   })
 );
+console.log("Session middleware set up");
 
 // Initialize passport
 app.use(passport.initialize());
+console.log("Passport initialized");
+
 app.use(passport.session());   // <-- IMPORTANT (you missed this)
+console.log("Passport session enabled");
 
 // Routes
 import authRoutes from './routes/authRoutes.js';

@@ -1,11 +1,12 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
-import { X, CheckCircle, Clock, AlertCircle } from "lucide-react"
+import { X, CheckCircle, Clock, AlertCircle, ArrowLeft } from "lucide-react"
 import Sidebar from "./sidebar"
 import ComplaintCard from "./complaint-card"
 import StatusModal from "./status-modal"
 import "../styles/civiclens-theme.css";
+import { useNavigate } from "react-router-dom"
 
 
 export default function AdminDashboard() {
@@ -19,7 +20,25 @@ export default function AdminDashboard() {
   const [error, setError] = useState(null)
   const [photoUrl, setPhotoUrl] = useState(null)
   const [isPhotoOpen, setIsPhotoOpen] = useState(false)
-
+const navigate = useNavigate();
+   // Back Button
+    const BackButton = () => (
+      <div className="absolute top-4 left-4 z-10">
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors"
+          style={{
+            backgroundColor: 'rgba(0, 209, 178, 0.1)',
+            color: '#00D1B2',
+            border: '1px solid rgba(0, 209, 178, 0.3)',
+          }}
+        >
+          <ArrowLeft size={20} />
+          Back
+        </button>
+      </div>
+    );
+  
   const categories = [
     "All",
     "Garbage Issue",
@@ -176,13 +195,14 @@ export default function AdminDashboard() {
 
   if (error)
     return (
-      <div className="flex h-screen items-center justify-center text-xl text-red-400 bg-[#081A2B]">
+      <div className="flex h-screen  items-center justify-center text-xl text-red-400 bg-[#081A2B]">
         Error: {error}
       </div>
     )
 
   return (
-    <div className="civiclens-theme dark min-h-screen bg-[#081A2B] text-white flex">
+    <div className="civiclens-theme  dark min-h-screen bg-[#081A2B] text-white flex">
+      <BackButton />
       {/* Sidebar */}
       <Sidebar
         categories={categories}

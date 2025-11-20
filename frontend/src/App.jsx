@@ -13,6 +13,8 @@ import { KnowUs} from './components/Knowus'
 import AdminDashboard from './components/AdminDashboard'
 import { Dashboard } from './components/Dashboard'
 import { YourComplains } from './components/YourComplaints'
+import { GoogleCallback } from './components/GoogleCallback'
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState(null);
@@ -22,7 +24,7 @@ function App() {
   useEffect(() => {
     const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    
+
     if (user && token) {
       setIsLoggedIn(true);
       try {
@@ -40,30 +42,6 @@ function App() {
   }
 
   return (
-<>
-        <Router>
-          <Routes>
-          <Route path='/' element={
-            <>
-            <Navbar></Navbar>
-          <HeroSection/>
-          <FourStepsSection/>
-           <CategoriesSection/>
-           <Footer/>
-            </>
-          }
-          />
-            <Route path='/signup' element={<Signup/>}/>
-            <Route path='/login' element={<Login/>}/>
-            <Route path='/dashboard' element ={<Dashboard />}/>
-            <Route path='/admin-dashboard' element= {<AdminDashboard />} />
-            <Route path='/map' element={<Map />}/>
-            <Route path='/your-complaints' element={ <YourComplains />}/>
-            <Route path='/auth/google/callback' element={<GoogleCallback />} />
-            <Route path='/knowus' element={<KnowUs />}/>
-          </Routes>
-        </Router>
-
     <Router>
       <Routes>
         <Route path='/' element={
@@ -74,18 +52,17 @@ function App() {
             <CategoriesSection/>
             <Footer/>
           </>
-        }
-        />
+        } />
         <Route path='/signup' element={isLoggedIn ? <Navigate to={userRole === 'admin' ? '/admin-dashboard' : '/dashboard'} /> : <Signup setIsLoggedIn={setIsLoggedIn} setUserRole={setUserRole} />}/>
         <Route path='/login' element={isLoggedIn ? <Navigate to={userRole === 'admin' ? '/admin-dashboard' : '/dashboard'} /> : <Login setIsLoggedIn={setIsLoggedIn} setUserRole={setUserRole} />}/>
-        <Route path='/dashboard' element ={<Dashboard />}/>
-        <Route path='/admin-dashboard' element= {<AdminDashboard />} />
+        <Route path='/dashboard' element={<Dashboard />}/>
+        <Route path='/admin-dashboard' element={<AdminDashboard />} />
         <Route path='/map' element={<Map />}/>
-        <Route path='/your-complaints' element={ <YourComplains />}/>
+        <Route path='/your-complaints' element={<YourComplains />}/>
+        <Route path='/auth/google/callback' element={<GoogleCallback />} />
         <Route path='/knowus' element={<KnowUs />}/>
       </Routes>
     </Router>
-    </>
   )
 }
 

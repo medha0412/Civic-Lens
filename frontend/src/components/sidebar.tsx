@@ -25,7 +25,7 @@ export default function Sidebar({
   onDateRangeChange,
 }: SidebarProps) {
   return (
-    <aside className="w-64 bg-card border-r border-border overflow-y-auto">
+    <aside className="w-64 bg-card border-r border-border overflow-y-auto mt-16">
       <div className="p-6">
         <div className="flex items-center gap-2 mb-8">
           <div className="bg-accent p-2 rounded-lg">

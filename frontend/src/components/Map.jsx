@@ -496,7 +496,7 @@ const handleCitySearch = async () => {
                       className="flex-1 py-2 rounded"
                       style={{ backgroundColor: "#00D1B2", color: "#081A2B" }}
                     >
-                      📱 Camera
+                       Camera
                     </button>
                     <button
                       type="button"
@@ -504,7 +504,7 @@ const handleCitySearch = async () => {
                       className="flex-1 py-2 rounded"
                       style={{ backgroundColor: "#00D1B2", color: "#081A2B" }}
                     >
-                      💾 Device
+                       Device
                     </button>
                   </div>
                 )}

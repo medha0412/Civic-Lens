@@ -1,31 +1,41 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-export  function GoogleCallback() {
+export function GoogleCallback() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    const encodedUserData = params.get("user");
+    try {
+      const params = new URLSearchParams(location.search);
+      const token = params.get("token");
+      const encodedUserData = params.get("user");
 
-    if (token && encodedUserData) {
-      localStorage.setItem("token", token);
+      console.log("Token from URL:", token);
+      console.log("Encoded user data from URL:", encodedUserData);
 
-      const userData = decodeURIComponent(encodedUserData);
-      localStorage.setItem("user", userData);
+      if (token && encodedUserData) {
+        localStorage.setItem("token", token);
 
-      const user = JSON.parse(userData);
+        const decodedUserData = decodeURIComponent(encodedUserData);
+        localStorage.setItem("user", decodedUserData);
 
-      if (user.role === "admin") {
-        navigate("/admin-dashboard");
+        const user = JSON.parse(decodedUserData);
+
+        if (user.role === "admin") {
+          navigate("/admin-dashboard");
+        } else {
+          navigate("/dashboard");
+        }
       } else {
-        navigate("/dashboard");
+        console.error("Missing token or user data in URL");
+        navigate("/login");
       }
-    } else {
+    } catch (error) {
+      console.error("Error parsing Google callback data:", error);
       navigate("/login");
     }
-  }, []);
+  }, [location, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center text-white text-lg">
