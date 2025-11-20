@@ -7,36 +7,53 @@ export default function GoogleCallback({ setIsLoggedIn, setUserRole }) {
 
   useEffect(() => {
     const params = new URLSearchParams(search)
-    const token = params.get('token')
-    const userParam = params.get('user')
+    const sessionId = params.get('session')
+    const errorParam = params.get('error')
 
-    if (!token || !userParam) {
-      // Missing data — send to login
+    // Handle authentication errors
+    if (errorParam) {
+      console.error('Authentication error:', errorParam)
       navigate('/login')
       return
     }
 
-    try {
-      const userJson = decodeURIComponent(userParam)
-      const user = JSON.parse(userJson)
-
-      // Persist session
-      localStorage.setItem('token', token)
-      localStorage.setItem('user', JSON.stringify(user))
-
-      if (setIsLoggedIn) setIsLoggedIn(true)
-      if (setUserRole) setUserRole(user.role || 'user')
-
-      // Redirect based on role
-      if (user.role === 'admin') {
-        navigate('/admin-dashboard')
-      } else {
-        navigate('/dashboard')
-      }
-    } catch (err) {
-      console.error('Failed to process Google callback:', err)
+    if (!sessionId) {
+      // Missing session ID — send to login
       navigate('/login')
+      return
     }
+
+    // Fetch auth data from backend using session ID
+    const fetchAuthData = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/google/session/${sessionId}`)
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch auth data')
+        }
+
+        const { token, user } = await response.json()
+
+        // Persist session
+        localStorage.setItem('token', token)
+        localStorage.setItem('user', JSON.stringify(user))
+
+        if (setIsLoggedIn) setIsLoggedIn(true)
+        if (setUserRole) setUserRole(user.role || 'user')
+
+        // Redirect based on role
+        if (user.role === 'admin') {
+          navigate('/admin-dashboard')
+        } else {
+          navigate('/dashboard')
+        }
+      } catch (err) {
+        console.error('Failed to process Google callback:', err)
+        navigate('/login')
+      }
+    }
+
+    fetchAuthData()
   }, [search, navigate, setIsLoggedIn, setUserRole])
 
   return (
