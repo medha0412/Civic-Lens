@@ -16,9 +16,22 @@ PORT=5000
 NODE_ENV=development
 JWT_SECRET=your_jwt_secret_key_here_change_in_production
 JWT_EXPIRE=30d
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:5173
 SESSION_SECRET=your_session_secret_key_here
+
+# Google OAuth (optional - for Google sign-in)
+CLIENT_ID=your_google_client_id
+CLIENT_SECRET=your_google_client_secret
+GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
 ```
+
+**For Production (Render)**, set:
+```
+FRONTEND_URL=https://civiclens-major.netlify.app
+GOOGLE_CALLBACK_URL=https://civic-lens-1-23jq.onrender.com/api/auth/google/callback
+```
+
+See `GOOGLE_AUTH_SETUP.md` for detailed Google OAuth setup instructions.
 
 **Note**: The CORS configuration allows requests from:
 - `http://localhost:5173` (Vite dev server)

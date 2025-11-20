@@ -22,11 +22,19 @@ router.get(
   passport.authenticate('google', { failureRedirect: '/api/auth/google/failure', session: false }),
   (req, res) => {
     console.log("Callback route hit");
+    console.log("Request user:", req.user);
+    console.log("Request query:", req.query);
+    console.log("Request params:", req.params);
 
     // SAFETY CHECK — IMPORTANT!
     if (!req.user) {
       console.error("No user received in callback!");
-      return res.redirect(`${process.env.FRONTEND_URL}/login`);
+      const frontendUrl = process.env.FRONTEND_URL || 
+        (process.env.NODE_ENV === 'production' 
+          ? 'https://civiclens-major.netlify.app' 
+          : 'http://localhost:5173');
+      console.error("Redirecting to login due to missing user");
+      return res.redirect(`${frontendUrl}/login?error=no_user`);
     }
 
     const user = req.user;
@@ -59,7 +67,22 @@ router.get(
     setTimeout(() => authSessions.delete(sessionId), 5 * 60 * 1000);
 
     console.log('Session created with ID:', sessionId);
-    const redirectUrl = `${process.env.FRONTEND_URL}/auth/google/callback?session=${sessionId}`;
+    
+    // Determine frontend URL - support both local and production
+    let frontendUrl = process.env.FRONTEND_URL;
+    
+    // If FRONTEND_URL is not set or is localhost, try to detect from request
+    if (!frontendUrl || frontendUrl.includes('localhost')) {
+      // In production, use the Netlify URL
+      if (process.env.NODE_ENV === 'production') {
+        frontendUrl = 'https://civiclens-major.netlify.app';
+      } else {
+        // Local development - default to Vite dev server
+        frontendUrl = 'http://localhost:5173';
+      }
+    }
+    
+    const redirectUrl = `${frontendUrl}/auth/google/callback?session=${sessionId}`;
     console.log('Redirecting to:', redirectUrl);
     return res.redirect(redirectUrl);
   }
@@ -82,7 +105,11 @@ router.get('/google/session/:sessionId', (req, res) => {
 
 // Failure route
 router.get('/google/failure', (req, res) => {
-  res.redirect(`${process.env.FRONTEND_URL}/login?error=google_auth_failed`);
+  const frontendUrl = process.env.FRONTEND_URL || 
+    (process.env.NODE_ENV === 'production' 
+      ? 'https://civiclens-major.netlify.app' 
+      : 'http://localhost:5173');
+  res.redirect(`${frontendUrl}/login?error=google_auth_failed`);
 });
 
 export default router;
