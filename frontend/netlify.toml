@@ -5,6 +5,7 @@
 
 [build.environment]
   NODE_ENV = "production"
+  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV,PORT,VITE_BACKEND_URL"
 
 [[redirects]]
   from = "/*"
@@ -25,6 +26,4 @@
 [build.processing.html]
   pretty_urls = true
 
-# Configure secrets scanning to omit common non-sensitive environment variables
-[build.environment]
-  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV,PORT,VITE_BACKEND_URL"
+

@@ -2,14 +2,32 @@
 
 import React from "react"
 import { useState } from "react"
-import { Mail, Linkedin, Github, FileText, Send } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { Mail, Linkedin, Github, FileText, Send, ArrowLeft } from "lucide-react"
 import DeveloperCard from "./developer-card"
 import tanmay from "../assets/tanmay.jpg"
 import medha from "../assets/medha.jpg"
 export  function KnowUs() {
+  const navigate = useNavigate();
   const [suggestion, setSuggestion] = useState("")
   const [submitted, setSubmitted] = useState(false)
-
+// Back Button
+  const BackButton = () => (
+    <div className="absolute top-4 left-4 z-10">
+      <button
+        onClick={() => navigate('/')}
+        className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors"
+        style={{
+          backgroundColor: 'rgba(0, 209, 178, 0.1)',
+          color: '#00D1B2',
+          border: '1px solid rgba(0, 209, 178, 0.3)',
+        }}
+      >
+        <ArrowLeft size={20} />
+        Back
+      </button>
+    </div>
+  );
   const handleSubmit = (e) => {
     e.preventDefault()
     if (suggestion.trim()) {
@@ -25,7 +43,7 @@ export  function KnowUs() {
       roles: "Frontend • Backend • UI/UX Designing",
       image: medha,
       links: [
-        { icon: FileText, label: "Resume", href: "/Medha Pant Resume.pdf" },
+        { icon: FileText, label: "Resume", href: "Medha_Pant_Resume.pdf" },
         { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/medhapant4/" },
         { icon: Github, label: "GitHub", href: "https://github.com/medha0412" },
         { icon: Mail, label: "Email", href: "mailto:medhapant4@gmail.com" },
@@ -36,7 +54,7 @@ export  function KnowUs() {
       roles: "Backend • AI Integration",
       image: tanmay,
       links: [
-        { icon: FileText, label: "Resume", href: "#" },
+        { icon: FileText, label: "Resume", href: "Tanmay_Yadav_res_doccccc.pdf" },
         { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/tanmay-yadav-5b82712" },
         { icon: Github, label: "GitHub", href: "https://github.com/Prabhu0414" },
         { icon: Mail, label: "Email", href: "mailto:tanmayyadav1410@gmail.com" },
@@ -46,6 +64,7 @@ export  function KnowUs() {
 
   return (
     <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: "#081A2B" }}>
+      <BackButton />
       <div className="max-w-6xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12 animate-fade-in">

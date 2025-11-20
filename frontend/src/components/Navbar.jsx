@@ -44,7 +44,7 @@ export function Navbar({ isLoggedIn }) {
             <Link to="/knowus">
             <Button
               
-              className="text-background hover:text-accent transition-colors text-xl duration-300 "
+              className="text-background hover:text-accent transition-colors text-xl  font-normal duration-300 "
             >
               Know Us 
             </Button>
