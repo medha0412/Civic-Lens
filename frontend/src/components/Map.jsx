@@ -219,7 +219,7 @@ const handleCitySearch = async () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/complaints', formDataToSend, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/complaints`, formDataToSend, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -496,7 +496,7 @@ const handleCitySearch = async () => {
                       className="flex-1 py-2 rounded"
                       style={{ backgroundColor: "#00D1B2", color: "#081A2B" }}
                     >
-                      📱 Camera
+                       Camera
                     </button>
                     <button
                       type="button"
@@ -504,7 +504,7 @@ const handleCitySearch = async () => {
                       className="flex-1 py-2 rounded"
                       style={{ backgroundColor: "#00D1B2", color: "#081A2B" }}
                     >
-                      💾 Device
+                       Device
                     </button>
                   </div>
                 )}

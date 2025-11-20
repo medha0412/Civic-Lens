@@ -14,12 +14,16 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails?.[0]?.value;
+        console.log("GoogleStrategy invoked");          // ✅ Check if strategy is hit
+        console.log("Profile received:", profile);      // ✅ See the profile object
 
+        const email = profile.emails?.[0]?.value;
+        console.log("Extracted email:", email);
         // 1. Find user by Google ID OR Email
         let user =
           (await User.findOne({ googleId: profile.id })) ||
           (await User.findOne({ email }));
+               console.log("User found in DB:", user);
 
         // 2. Create new Google user
         if (!user) {

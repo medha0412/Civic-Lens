@@ -18,13 +18,18 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/api/auth/google/failure', session: false }),
   (req, res) => {
+      console.log("Callback route hit");
 
     // SAFETY CHECK — IMPORTANT!
     if (!req.user) {
+            console.error("No user received in callback!");
+
       return res.redirect('/api/auth/google/failure');
     }
 
     const user = req.user;
+        console.log('User data received in callback:', user);
+
     console.log('User data:', user);
 
     // Create JWT token
