@@ -8,6 +8,7 @@ import { CategoriesSection } from './components/Types'
 import { Footer } from './components/Footer'
 import { Signup } from "./components/Signup"
 import { Login } from './components/Login'
+import GoogleCallback from './components/GoogleCallback'
 import { Map } from './components/Map'
 import { KnowUs} from './components/Knowus'
 import AdminDashboard from './components/AdminDashboard'
@@ -40,53 +41,52 @@ function App() {
   }
 
   return (
-<>
-        <Router>
-          <Routes>
-          <Route path='/' element={
-            <>
-            <Navbar></Navbar>
-          <HeroSection/>
-          <FourStepsSection/>
-           <CategoriesSection/>
-           <Footer/>
-            </>
-          }
+      <Router>
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                <Navbar isLoggedIn={isLoggedIn} />
+                <HeroSection />
+                <FourStepsSection />
+                <CategoriesSection />
+                <Footer />
+              </>
+            }
           />
-            <Route path='/signup' element={<Signup/>}/>
-            <Route path='/login' element={<Login/>}/>
-            <Route path='/dashboard' element ={<Dashboard />}/>
-            <Route path='/admin-dashboard' element= {<AdminDashboard />} />
-            <Route path='/map' element={<Map />}/>
-            <Route path='/your-complaints' element={ <YourComplains />}/>
-            <Route path='/auth/google/callback' element={<GoogleCallback />} />
-            <Route path='/knowus' element={<KnowUs />}/>
-          </Routes>
-        </Router>
 
-    <Router>
-      <Routes>
-        <Route path='/' element={
-          <>
-            <Navbar isLoggedIn={isLoggedIn} />
-            <HeroSection/>
-            <FourStepsSection/>
-            <CategoriesSection/>
-            <Footer/>
-          </>
-        }
-        />
-        <Route path='/signup' element={isLoggedIn ? <Navigate to={userRole === 'admin' ? '/admin-dashboard' : '/dashboard'} /> : <Signup setIsLoggedIn={setIsLoggedIn} setUserRole={setUserRole} />}/>
-        <Route path='/login' element={isLoggedIn ? <Navigate to={userRole === 'admin' ? '/admin-dashboard' : '/dashboard'} /> : <Login setIsLoggedIn={setIsLoggedIn} setUserRole={setUserRole} />}/>
-        <Route path='/dashboard' element ={<Dashboard />}/>
-        <Route path='/admin-dashboard' element= {<AdminDashboard />} />
-        <Route path='/map' element={<Map />}/>
-        <Route path='/your-complaints' element={ <YourComplains />}/>
-        <Route path='/knowus' element={<KnowUs />}/>
-      </Routes>
-    </Router>
-    </>
-  )
+          <Route
+            path='/signup'
+            element={
+              isLoggedIn ? (
+                <Navigate to={userRole === 'admin' ? '/admin-dashboard' : '/dashboard'} />
+              ) : (
+                <Signup setIsLoggedIn={setIsLoggedIn} setUserRole={setUserRole} />
+              )
+            }
+          />
+
+          <Route
+            path='/login'
+            element={
+              isLoggedIn ? (
+                <Navigate to={userRole === 'admin' ? '/admin-dashboard' : '/dashboard'} />
+              ) : (
+                <Login setIsLoggedIn={setIsLoggedIn} setUserRole={setUserRole} />
+              )
+            }
+          />
+
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/admin-dashboard' element={<AdminDashboard />} />
+          <Route path='/map' element={<Map />} />
+          <Route path='/your-complaints' element={<YourComplains />} />
+          <Route path='/auth/google/callback' element={<GoogleCallback setIsLoggedIn={setIsLoggedIn} setUserRole={setUserRole} />} />
+          <Route path='/knowus' element={<KnowUs />} />
+        </Routes>
+      </Router>
+    )
 }
 
 export default App;

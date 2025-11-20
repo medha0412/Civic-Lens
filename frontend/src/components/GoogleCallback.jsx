@@ -1,35 +1,47 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 
-export  function GoogleCallback() {
-  const navigate = useNavigate();
+export default function GoogleCallback({ setIsLoggedIn, setUserRole }) {
+  const navigate = useNavigate()
+  const { search } = useLocation()
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    const encodedUserData = params.get("user");
+    const params = new URLSearchParams(search)
+    const token = params.get('token')
+    const userParam = params.get('user')
 
-    if (token && encodedUserData) {
-      localStorage.setItem("token", token);
-
-      const userData = decodeURIComponent(encodedUserData);
-      localStorage.setItem("user", userData);
-
-      const user = JSON.parse(userData);
-
-      if (user.role === "admin") {
-        navigate("/admin-dashboard");
-      } else {
-        navigate("/dashboard");
-      }
-    } else {
-      navigate("/login");
+    if (!token || !userParam) {
+      // Missing data — send to login
+      navigate('/login')
+      return
     }
-  }, []);
+
+    try {
+      const userJson = decodeURIComponent(userParam)
+      const user = JSON.parse(userJson)
+
+      // Persist session
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
+
+      if (setIsLoggedIn) setIsLoggedIn(true)
+      if (setUserRole) setUserRole(user.role || 'user')
+
+      // Redirect based on role
+      if (user.role === 'admin') {
+        navigate('/admin-dashboard')
+      } else {
+        navigate('/dashboard')
+      }
+    } catch (err) {
+      console.error('Failed to process Google callback:', err)
+      navigate('/login')
+    }
+  }, [search, navigate, setIsLoggedIn, setUserRole])
 
   return (
-    <div className="min-h-screen flex items-center justify-center text-white text-lg">
-      Logging you in with Google...
+    <div className="min-h-screen flex items-center justify-center">
+      <p className="text-lg">Signing you in with Google...</p>
     </div>
-  );
+  )
 }
