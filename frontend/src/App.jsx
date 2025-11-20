@@ -12,6 +12,7 @@ import { KnowUs} from './components/Knowus'
 import AdminDashboard from './components/AdminDashboard'
 import { Dashboard } from './components/Dashboard'
 import { YourComplains } from './components/YourComplaints'
+import { GoogleCallback} from './components/GoogleCallback'
 function App() {
   return (
 
@@ -33,7 +34,7 @@ function App() {
             <Route path='/admin-dashboard' element= {<AdminDashboard />} />
             <Route path='/map' element={<Map />}/>
             <Route path='/your-complaints' element={ <YourComplains />}/>
-
+            <Route path='/auth/google/callback' element={<GoogleCallback />} />
             <Route path='/knowus' element={<KnowUs />}/>
           </Routes>
         </Router>

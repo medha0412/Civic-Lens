@@ -19,36 +19,53 @@ const userSchema = new mongoose.Schema({
       'Please provide a valid email'
     ]
   },
+
+  // OPTIONAL FOR GOOGLE USERS
   password: {
     type: String,
-    required: [true, 'Please provide a password'],
+    required: function () {
+      return this.authType === 'local'; // only required for normal signup
+    },
     minlength: [6, 'Password must be at least 6 characters'],
-    select: false // Don't return password by default
+    select: false
   },
+
+  // NEW FIELD TO DISTINGUISH AUTH TYPE
+  googleId: {
+  type: String,
+  default: null
+},
+  authType: {
+    type: String,
+    enum: ['local', 'google'],
+    default: 'local'
+  },
+
   city: {
     type: String,
     trim: true
   },
+
   role: {
     type: String,
     enum: ['user', 'admin'],
     default: 'user'
   },
+
   createdAt: {
     type: Date,
     default: Date.now
   }
 });
 
-// Hash password before saving
-userSchema.pre('save', async function(next) {
-  // Only hash the password if it has been modified (or is new)
-  if (!this.isModified('password')) {
+// HASH PASSWORD ONLY IF LOCAL USER
+userSchema.pre('save', async function (next) {
+  // If password not modified OR user is google auth → skip hashing
+  if (!this.isModified('password') || this.authType === 'google') {
     return next();
   }
 
   try {
-    // Hash password with cost of 12
     const salt = await bcrypt.genSalt(12);
     this.password = await bcrypt.hash(this.password, salt);
     next();
@@ -57,10 +74,10 @@ userSchema.pre('save', async function(next) {
   }
 });
 
-// Method to compare password for login
-userSchema.methods.matchPassword = async function(enteredPassword) {
+// COMPARE PASSWORD (LOCAL ONLY)
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  if (this.authType === 'google') return false;
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
 export default mongoose.model('User', userSchema);
-

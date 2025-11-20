@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db.js';
+import passport from 'passport';
+import session from 'express-session';
 
 // Load environment variables
 dotenv.config();
@@ -11,20 +13,39 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(cors({
   origin: "http://localhost:5173",
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true
 }));
 
+// Load Google Strategy BEFORE initializing passport
+import './auth/googleStrategy.js';
+
+// Session middleware (required for Google OAuth)
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "supersecretkey",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Initialize passport
+app.use(passport.initialize());
+app.use(passport.session());   // <-- IMPORTANT (you missed this)
+
 // Routes
 import authRoutes from './routes/authRoutes.js';
 import complaintRoutes from './routes/complaintRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import googleAuth from './routes/googleAuth.js';
 
 app.use('/api/auth', authRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/auth', googleAuth);
 
 // Serve uploaded files statically
 app.use('/uploads', express.static('uploads'));
@@ -59,4 +80,3 @@ const startServer = async () => {
 };
 
 startServer();
-
