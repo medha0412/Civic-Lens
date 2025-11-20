@@ -3,7 +3,8 @@
 import { Button } from "./ui/button"
 import civicLensLogo from "../assets/CIVIC_LENS.png"
 import { Link } from "react-router-dom"
-export function Navbar() {
+
+export function Navbar({ isLoggedIn }) {
   return (
     <nav className="fixed top-0 w-full bg-foreground backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b border-border shadow-lg animate-fade-in transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,12 +50,14 @@ export function Navbar() {
             </Button>
             </Link>
           </div>
-          <Link to="/signup">
-          <Button className="bg-primary h-12 w-24 text-xl hover:bg-primary/90 text-background rounded-full transition-all duration-300 hover:scale-105 shadow-lg glow-button-primary font-semibold"
-          >
-            Sign Up
-          </Button>
-          </Link>
+          {!isLoggedIn && (
+            <Link to="/signup">
+              <Button className="bg-primary h-12 w-24 text-xl hover:bg-primary/90 text-background rounded-full transition-all duration-300 hover:scale-105 shadow-lg glow-button-primary font-semibold"
+              >
+                Sign Up
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

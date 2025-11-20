@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export function Signup() {
+
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+
+export  function Signup({ setIsLoggedIn, setUserRole }) {
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -27,7 +33,21 @@ export function Signup() {
     try {
       const res = await axios.post("http://localhost:5000/api/auth/signup", formData);
       alert(res.data.message);
+
       navigate("/dashboard");
+
+      // Extract user data from response
+      const user = res.data.data?.user || { role: 'user' };
+      localStorage.setItem("user", JSON.stringify(user));
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+      }
+
+      // Update App state
+      setIsLoggedIn(true);
+      setUserRole(user.role);
+
+      navigate('/dashboard');
     } catch (error) {
       alert(error.response?.data?.message || "Signup failed");
     }

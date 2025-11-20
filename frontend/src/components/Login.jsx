@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export function Login() {
+
+
+export  function Login({ setIsLoggedIn, setUserRole }) {
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -37,6 +40,10 @@ export function Login() {
       const user = res.data.data.user;
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", res.data.token);
+
+      // Update App state
+      setIsLoggedIn(true);
+      setUserRole(user.role);
 
       if (user.role === "admin") {
         navigate("/admin-dashboard");
