@@ -113,7 +113,7 @@ JWT_SECRET=your_jwt_secret
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 CLIENT_URL=http://localhost:3000
-OPEN_AI_KEY=your_opemai_key
+OPEN_AI_KEY=your_openai_key
 ```
 
 ---
@@ -161,6 +161,7 @@ npm start
 ## 👨‍💻 Developers
 
 **Medha Pant** – Worked on Frontend • Backend • UI/UX Designing in Civic-Lens
+
 **Tanmay Yadav** – Worked on Backend • AI Integration in Civic-Lens
 
 ---
