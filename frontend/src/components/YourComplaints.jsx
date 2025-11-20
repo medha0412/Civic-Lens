@@ -35,7 +35,7 @@ export function YourComplains() {
           return;
         }
 
-        const response = await axios.get("http://localhost:5000/api/complaints", {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/complaints`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -154,7 +154,7 @@ export function YourComplains() {
                 {complaint.photo && (
                   <div className="mb-4">
                     <img
-                      src={`http://localhost:5000${complaint.photo}`}
+                      src={`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}${complaint.photo}`}
                       alt="Complaint photo"
                       className="w-full max-w-md h-48 object-cover rounded-lg border border-gray-600"
                     />

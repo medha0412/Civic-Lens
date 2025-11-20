@@ -31,7 +31,7 @@ export  function Login({ setIsLoggedIn, setUserRole }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/signin",
+        `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/signin`,
         formData
       );
 
@@ -107,7 +107,7 @@ export  function Login({ setIsLoggedIn, setUserRole }) {
         <button
           type="button"
           onClick={() =>
-            (window.location.href = "http://localhost:5000/api/auth/google")
+            (window.location.href = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/google`)
           }
           className="w-full flex items-center justify-center gap-2 bg-white/10 border border-white/20 py-2.5 rounded-lg mb-4 hover:bg-white/20 transition text-white font-medium"
         >

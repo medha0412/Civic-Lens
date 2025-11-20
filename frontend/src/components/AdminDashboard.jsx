@@ -71,7 +71,7 @@ const navigate = useNavigate();
         if (!token) {
           throw new Error('No authentication token found. Please log in.')
         }
-        const res = await fetch("http://localhost:5000/api/admin/complaints", {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/admin/complaints`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -134,7 +134,7 @@ const navigate = useNavigate();
     } catch (e) {
       // Not a full URL — assume it's a backend-relative path and prefix with API origin
       if (url.startsWith('/')) {
-        finalUrl = `${window.location.protocol}//${window.location.hostname}:5000${url}`
+        finalUrl = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}${url}`
       } else {
         // fallback: treat as relative to uploads path
         finalUrl = `${window.location.protocol}//${window.location.hostname}:5000/${url}`
@@ -152,9 +152,9 @@ const navigate = useNavigate();
       if (!token) {
         throw new Error('No authentication token found. Please log in.')
       }
-      const res = await fetch(`http://localhost:5000/api/admin/complaints/${selectedComplaint._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/admin/complaints/${selectedComplaint._id}`, {
         method: "PATCH",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },

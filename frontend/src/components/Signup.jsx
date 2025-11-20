@@ -27,7 +27,7 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
       return;
     }
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/signup", formData);
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/signup`, formData);
       alert(res.data.message);
 
       navigate("/dashboard");
@@ -50,7 +50,7 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
   };
 
   const googleSignup = () => {
-    window.location.href = "http://localhost:5000/api/auth/google";
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/google`;
   };
 
   return (
