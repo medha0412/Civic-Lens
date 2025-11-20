@@ -7,6 +7,7 @@ import ComplaintCard from "./complaint-card"
 import StatusModal from "./status-modal"
 import "../styles/civiclens-theme.css";
 import { useNavigate } from "react-router-dom"
+import { API_ENDPOINTS, getFullUrl } from "../config/api"
 
 
 export default function AdminDashboard() {
@@ -71,7 +72,7 @@ const navigate = useNavigate();
         if (!token) {
           throw new Error('No authentication token found. Please log in.')
         }
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/admin/complaints`, {
+        const res = await fetch(API_ENDPOINTS.ADMIN_COMPLAINTS, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -133,12 +134,7 @@ const navigate = useNavigate();
       finalUrl = parsed.href
     } catch (e) {
       // Not a full URL — assume it's a backend-relative path and prefix with API origin
-      if (url.startsWith('/')) {
-        finalUrl = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}${url}`
-      } else {
-        // fallback: treat as relative to uploads path
-        finalUrl = `${window.location.protocol}//${window.location.hostname}:5000/${url}`
-      }
+      finalUrl = getFullUrl(url)
     }
 
     setPhotoUrl(finalUrl)
@@ -152,7 +148,7 @@ const navigate = useNavigate();
       if (!token) {
         throw new Error('No authentication token found. Please log in.')
       }
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/admin/complaints/${selectedComplaint._id}`, {
+      const res = await fetch(API_ENDPOINTS.ADMIN_COMPLAINT_UPDATE(selectedComplaint._id), {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

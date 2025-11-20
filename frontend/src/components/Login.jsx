@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from "../config/api";
 
 
 
@@ -30,8 +31,9 @@ export  function Login({ setIsLoggedIn, setUserRole }) {
     }
 
     try {
+      console.log('🔗 Attempting to sign in to:', API_ENDPOINTS.SIGNIN);
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/signin`,
+        API_ENDPOINTS.SIGNIN,
         formData
       );
 
@@ -51,7 +53,12 @@ export  function Login({ setIsLoggedIn, setUserRole }) {
         navigate("/dashboard");
       }
     } catch (error) {
-      alert(error.response?.data?.message || "login failed");
+      console.error('❌ Login error:', error);
+      if (error.code === 'ERR_NETWORK' || error.message.includes('ERR_CONNECTION_REFUSED')) {
+        alert(`Connection failed. Please check:\n1. Backend server is running\n2. VITE_BACKEND_URL is set correctly\n\nAttempted URL: ${API_ENDPOINTS.SIGNIN}`);
+      } else {
+        alert(error.response?.data?.message || "login failed");
+      }
     }
 
     console.log("Form submitted", formData);
@@ -107,7 +114,7 @@ export  function Login({ setIsLoggedIn, setUserRole }) {
         <button
           type="button"
           onClick={() =>
-            (window.location.href = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/google`)
+            (window.location.href = API_ENDPOINTS.GOOGLE_AUTH)
           }
           className="w-full flex items-center justify-center gap-2 bg-white/10 border border-white/20 py-2.5 rounded-lg mb-4 hover:bg-white/20 transition text-white font-medium"
         >

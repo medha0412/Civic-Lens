@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from "../config/api";
 
 export  function Signup({ setIsLoggedIn, setUserRole }) {
 
@@ -27,7 +28,7 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
       return;
     }
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/signup`, formData);
+      const res = await axios.post(API_ENDPOINTS.SIGNUP, formData);
       alert(res.data.message);
 
       navigate("/dashboard");
@@ -50,7 +51,7 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
   };
 
   const googleSignup = () => {
-    window.location.href = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/google`;
+    window.location.href = API_ENDPOINTS.GOOGLE_AUTH;
   };
 
   return (

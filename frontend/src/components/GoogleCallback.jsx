@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { API_ENDPOINTS } from '../config/api'
 
 export default function GoogleCallback({ setIsLoggedIn, setUserRole }) {
   const navigate = useNavigate()
@@ -26,7 +27,7 @@ export default function GoogleCallback({ setIsLoggedIn, setUserRole }) {
     // Fetch auth data from backend using session ID
     const fetchAuthData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/google/session/${sessionId}`)
+        const response = await fetch(API_ENDPOINTS.GOOGLE_SESSION(sessionId))
         
         if (!response.ok) {
           throw new Error('Failed to fetch auth data')

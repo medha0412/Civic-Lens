@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Calendar, Tag, Clock, ArrowLeft, CheckCircle, Image as ImageIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS, getFullUrl } from "../config/api";
 export function YourComplains() {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,7 +36,7 @@ export function YourComplains() {
           return;
         }
 
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/complaints`, {
+        const response = await axios.get(API_ENDPOINTS.COMPLAINTS, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -154,7 +155,7 @@ export function YourComplains() {
                 {complaint.photo && (
                   <div className="mb-4">
                     <img
-                      src={`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}${complaint.photo}`}
+                      src={getFullUrl(complaint.photo)}
                       alt="Complaint photo"
                       className="w-full max-w-md h-48 object-cover rounded-lg border border-gray-600"
                     />
