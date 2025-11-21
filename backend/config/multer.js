@@ -2,14 +2,26 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, '../uploads/complaints');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('Created uploads directory:', uploadsDir);
+}
+
 // Set storage engine
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, './uploads/complaints/');
+    // Ensure directory exists before saving
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+    cb(null, uploadsDir);
   },
   filename: function(req, file, cb) {
     // Generate unique filename: timestamp-randomnumber-originalname

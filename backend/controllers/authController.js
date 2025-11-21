@@ -131,7 +131,14 @@ export const signin = async (req, res) => {
 // @access  Private
 export const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: 'User not authenticated'
+      });
+    }
+
+    const user = await User.findById(req.user._id);
 
     if (!user) {
       return res.status(404).json({
@@ -154,10 +161,11 @@ export const getMe = async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Error retrieving user:', error);
     res.status(500).json({
       success: false,
       message: 'Error retrieving user',
-      error: error.message
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
     });
   }
 };
