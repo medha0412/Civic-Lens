@@ -1,9 +1,21 @@
 // API Configuration
 // This file centralizes all API endpoint configuration
 
-// Get the backend URL from environment variable
-// In production, this should be set in your deployment platform (Netlify, Vercel, etc.)
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+const inferBackendUrl = () => {
+  const envUrl = import.meta.env.VITE_BACKEND_URL;
+  if (envUrl) return envUrl;
+
+  if (typeof window !== 'undefined') {
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (!isLocalhost) {
+      return 'https://civic-lens-1-23jq.onrender.com';
+    }
+  }
+
+  return 'http://localhost:5000';
+};
+
+const API_BASE_URL = inferBackendUrl();
 
 // Debug: Log the API base URL being used (only in development)
 if (import.meta.env.DEV) {
