@@ -7,9 +7,6 @@ dotenv.config();
 
 const router = express.Router();
 
-// Temporary storage for auth data (in production, use Redis or database)
-const authSessions = new Map();
-
 // Step 1: Start Google OAuth flow
 router.get(
   '/google',
@@ -52,8 +49,6 @@ router.get(
     );
     console.log('Token created');
 
-    // Create a short session ID to pass in URL
-    const sessionId = Math.random().toString(36).substring(2, 15);
     const userData = {
       _id: user._id,
       name: user.name,
@@ -61,12 +56,6 @@ router.get(
       role: user.role,
       authType: user.authType
     };
-    
-    // Store the data temporarily (expires in 5 minutes)
-    authSessions.set(sessionId, { token, user: userData });
-    setTimeout(() => authSessions.delete(sessionId), 5 * 60 * 1000);
-
-    console.log('Session created with ID:', sessionId);
     
     // Determine frontend URL - support both local and production
     let frontendUrl = process.env.FRONTEND_URL;
@@ -81,27 +70,12 @@ router.get(
         frontendUrl = 'http://localhost:5173';
       }
     }
-    
-    const redirectUrl = `${frontendUrl}/auth/google/callback?session=${sessionId}`;
+    const userPayload = encodeURIComponent(JSON.stringify(userData));
+    const redirectUrl = `${frontendUrl}/auth/google/callback?token=${token}&user=${userPayload}`;
     console.log('Redirecting to:', redirectUrl);
     return res.redirect(redirectUrl);
   }
 );
-
-// API endpoint to retrieve auth data by session ID
-router.get('/google/session/:sessionId', (req, res) => {
-  const { sessionId } = req.params;
-  const authData = authSessions.get(sessionId);
-  
-  if (!authData) {
-    return res.status(404).json({ message: 'Session not found or expired' });
-  }
-  
-  // Delete after retrieval (one-time use)
-  authSessions.delete(sessionId);
-  
-  res.json(authData);
-});
 
 // Failure route
 router.get('/google/failure', (req, res) => {

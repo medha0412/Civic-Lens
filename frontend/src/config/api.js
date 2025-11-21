@@ -17,7 +17,6 @@ export const API_ENDPOINTS = {
   SIGNIN: `${API_BASE_URL}/api/auth/signin`,
   SIGNUP: `${API_BASE_URL}/api/auth/signup`,
   GOOGLE_AUTH: `${API_BASE_URL}/api/auth/google`,
-  GOOGLE_SESSION: (sessionId) => `${API_BASE_URL}/api/auth/google/session/${sessionId}`,
   
   // Complaint endpoints
   COMPLAINTS: `${API_BASE_URL}/api/complaints`,

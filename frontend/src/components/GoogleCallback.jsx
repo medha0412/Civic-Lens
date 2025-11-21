@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { API_ENDPOINTS } from '../config/api'
 
 export default function GoogleCallback({ setIsLoggedIn, setUserRole }) {
   const navigate = useNavigate()
@@ -8,8 +7,9 @@ export default function GoogleCallback({ setIsLoggedIn, setUserRole }) {
 
   useEffect(() => {
     const params = new URLSearchParams(search)
-    const sessionId = params.get('session')
     const errorParam = params.get('error')
+    const token = params.get('token')
+    const userParam = params.get('user')
 
     // Handle authentication errors
     if (errorParam) {
@@ -18,43 +18,32 @@ export default function GoogleCallback({ setIsLoggedIn, setUserRole }) {
       return
     }
 
-    if (!sessionId) {
-      // Missing session ID — send to login
+    if (!token || !userParam) {
+      console.error('Missing token or user payload in callback URL')
       navigate('/login')
       return
     }
 
-    // Fetch auth data from backend using session ID
-    const fetchAuthData = async () => {
-      try {
-        const response = await fetch(API_ENDPOINTS.GOOGLE_SESSION(sessionId))
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch auth data')
-        }
+    try {
+      const user = JSON.parse(decodeURIComponent(userParam))
 
-        const { token, user } = await response.json()
+      // Persist session
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
 
-        // Persist session
-        localStorage.setItem('token', token)
-        localStorage.setItem('user', JSON.stringify(user))
+      if (setIsLoggedIn) setIsLoggedIn(true)
+      if (setUserRole) setUserRole(user.role || 'user')
 
-        if (setIsLoggedIn) setIsLoggedIn(true)
-        if (setUserRole) setUserRole(user.role || 'user')
-
-        // Redirect based on role
-        if (user.role === 'admin') {
-          navigate('/admin-dashboard')
-        } else {
-          navigate('/dashboard')
-        }
-      } catch (err) {
-        console.error('Failed to process Google callback:', err)
-        navigate('/login')
+      // Redirect based on role
+      if (user.role === 'admin') {
+        navigate('/admin-dashboard')
+      } else {
+        navigate('/dashboard')
       }
+    } catch (err) {
+      console.error('Failed to process Google callback:', err)
+      navigate('/login')
     }
-
-    fetchAuthData()
   }, [search, navigate, setIsLoggedIn, setUserRole])
 
   return (
