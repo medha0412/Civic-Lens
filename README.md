@@ -44,7 +44,7 @@ Civic Lens is a full‑stack, location‑aware civic issue reporting application
   * **Completed**
 * **Transparency & Accountability:** Tracks authority responsiveness.
 * **Live Status Updates:** Updates instantly reflect in user dashboard.
-
+* **For Admin page: ** email: admin123@gmail.com     password:admin123
 ---
 
 ## 📊 Tech Stack
