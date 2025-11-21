@@ -7,17 +7,10 @@ import { classifyComplaint } from '../utils/aiClassifier.js';
 // @access  Private
 export const createComplaint = async (req, res) => {
   try {
-    // Log incoming request for debugging
-    console.log('Received complaint request:', {
-      body: req.body,
-      hasFile: !!req.file,
-      user: req.user ? { id: req.user._id, email: req.user.email } : null
-    });
-
     const { message, latitude, longitude, city, area } = req.body;
 
     // Validate required fields
-    if (!message || message.trim() === '') {
+    if (!message) {
       return res.status(400).json({
         success: false,
         message: 'Message is required'
@@ -31,7 +24,7 @@ export const createComplaint = async (req, res) => {
       });
     }
 
-    if (!city || city.trim() === '') {
+    if (!city) {
       return res.status(400).json({
         success: false,
         message: 'City is required'
@@ -40,7 +33,6 @@ export const createComplaint = async (req, res) => {
 
     // Validate user exists
     if (!req.user || !req.user._id) {
-      console.error('User authentication failed:', { user: req.user });
       return res.status(401).json({
         success: false,
         message: 'User not authenticated'
@@ -51,7 +43,6 @@ export const createComplaint = async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (!user) {
-      console.error('User not found in database:', req.user._id);
       return res.status(404).json({
         success: false,
         message: 'User not found'
@@ -76,37 +67,24 @@ export const createComplaint = async (req, res) => {
       });
     }
 
-    // Classify complaint (with error handling)
-    let category;
-    try {
-      category = await classifyComplaint(message);
-    } catch (classifyError) {
-      console.error('Error classifying complaint, using default:', classifyError);
-      category = 'Other'; // Fallback to default category
-    }
+    const category = await classifyComplaint(message);
 
     // Create complaint
-    const complaintData = {
-      message: message.trim(),
+    const complaint = await Complaint.create({
+      message,
       category,
       photo: req.file ? `/uploads/complaints/${req.file.filename}` : null,
       location: {
         latitude: lat,
         longitude: lng
       },
-      city: city.trim(),
-      area: area ? area.trim() : null,
+      city,
+      area,
       createdBy: req.user._id
-    };
-
-    console.log('Creating complaint with data:', { ...complaintData, createdBy: req.user._id });
-
-    const complaint = await Complaint.create(complaintData);
+    });
 
     // Populate user details
     await complaint.populate('createdBy', 'name email');
-
-    console.log('Complaint created successfully:', complaint._id);
 
     res.status(201).json({
       success: true,
@@ -116,11 +94,7 @@ export const createComplaint = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Error creating complaint - Full error:', {
-      message: error.message,
-      stack: error.stack,
-      name: error.name
-    });
+    console.error('Error creating complaint:', error);
     res.status(500).json({
       success: false,
       message: 'Error creating complaint',
