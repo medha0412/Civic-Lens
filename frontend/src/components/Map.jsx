@@ -55,6 +55,7 @@ const [flyTrigger, setFlyTrigger] = useState(0);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showPhotoOptions, setShowPhotoOptions] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef();
   const cameraInputRef = useRef();
  const navigate = useNavigate();
@@ -63,12 +64,7 @@ const [flyTrigger, setFlyTrigger] = useState(0);
     <div className="absolute top-4 left-4 z-10">
       <button
         onClick={() => navigate('/dashboard')}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors"
-        style={{
-          backgroundColor: 'rgba(0, 209, 178, 0.1)',
-          color: '#00D1B2',
-          border: '1px solid rgba(0, 209, 178, 0.3)',
-        }}
+        className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors border border-border bg-card text-card-foreground hover:bg-muted"
       >
         <ArrowLeft size={20} />
         Back
@@ -205,6 +201,9 @@ const handleCitySearch = async () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Guard against rapid/double clicks and duplicate requests.
+    if (isSubmitting) return;
+
     if (!city || !photo || !isValidCaption) {
       alert("Please fill all required fields with valid data");
       return;
@@ -217,6 +216,8 @@ const handleCitySearch = async () => {
     formDataToSend.append("city", city);
     formDataToSend.append("area", address);
     formDataToSend.append("photo", photo);
+
+    setIsSubmitting(true);
 
     try {
       const token = localStorage.getItem('token');
@@ -251,19 +252,21 @@ const handleCitySearch = async () => {
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Error submitting complaint. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#081A2B" }}>
+    <div className="min-h-screen bg-transparent">
       <BackButton />
-      <form onSubmit={handleSubmit} className="max-w-7xl mx-auto p-6">
+      <form onSubmit={handleSubmit} className="section max-w-7xl mx-auto p-6 mt-6 rounded-2xl border border-border" aria-busy={isSubmitting}>
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2" style={{ color: "#FFFFFF" }}>
+          <h1 className="text-4xl font-bold mb-2 text-background">
             File a Complaint
           </h1>
-          <p style={{ color: "#00D1B2" }}>
+          <p className="text-primary">
             Help us improve your locality by reporting issues with precise location details
           </p>
         </div>
@@ -271,8 +274,8 @@ const handleCitySearch = async () => {
         {/* Modal Popup */}
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white border-2 rounded-lg p-6 max-w-md w-full mx-4" style={{ borderColor: "#00D1B2" }}>
-              <p className="text-lg font-semibold text-center" style={{ color: "#081A2B" }}>
+            <div className="bg-card border border-border rounded-lg p-6 max-w-md w-full mx-4">
+              <p className="text-lg font-semibold text-center text-card-foreground">
                 ✓ Your complaint has been sent to authorities. Keep checking your complaints section to see the progress of your complaint.
               </p>
             </div>
@@ -281,14 +284,14 @@ const handleCitySearch = async () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Left Column - City Input and Search */}
-          <div className="p-6 rounded-lg border-2" style={{ backgroundColor: "#0F1F2B", borderColor: "#00D1B2" }}>
-            <h2 className="text-2xl font-bold mb-6" style={{ color: "#00D1B2" }}>
+          <div className="card p-6 rounded-lg border border-border">
+            <h2 className="text-2xl font-bold mb-6 text-primary">
               📍 Location Details
             </h2>
 
             {/* City Input */}
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-3" style={{ color: "#FFFFFF" }}>
+              <label className="block text-sm font-medium mb-3 text-card-foreground">
                 Enter Your City
               </label>
               <input
@@ -296,12 +299,7 @@ const handleCitySearch = async () => {
                 placeholder="e.g., Ujjain, Mumbai, Delhi..."
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="border-2 p-3 rounded w-full"
-                style={{
-                  backgroundColor: "#081A2B",
-                  borderColor: "#00D1B2",
-                  color: "#FFFFFF",
-                }}
+                className="border p-3 rounded w-full bg-input border-border text-card-foreground"
                 required
               />
             </div>
@@ -312,8 +310,7 @@ const handleCitySearch = async () => {
                 type="button"
                 onClick={handleCitySearch}
                 disabled={loading}
-                className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 w-full"
-                style={{ backgroundColor: loading ? "#4A4A4A" : "#00D1B2", color: "#081A2B" }}
+                className="button-primary px-4 py-2 rounded disabled:opacity-50 w-full"
               >
                 {loading ? "Loading..." : "Search City"}
               </button>
@@ -321,43 +318,33 @@ const handleCitySearch = async () => {
 
             {/* Latitude Field */}
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-2" style={{ color: "#FFFFFF" }}>
+              <label className="block text-sm font-medium mb-2 text-card-foreground">
                 Latitude
               </label>
               <input
                 type="text"
                 value={lat}
                 readOnly
-                className="border-2 p-3 rounded w-full"
-                style={{
-                  backgroundColor: "#4A4A4A",
-                  borderColor: "#00D1B2",
-                  color: "#FFFFFF",
-                }}
+                className="border p-3 rounded w-full bg-muted border-border text-muted-foreground"
               />
             </div>
 
             {/* Longitude Field */}
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-2" style={{ color: "#FFFFFF" }}>
+              <label className="block text-sm font-medium mb-2 text-card-foreground">
                 Longitude
               </label>
               <input
                 type="text"
                 value={lng}
                 readOnly
-                className="border-2 p-3 rounded w-full"
-                style={{
-                  backgroundColor: "#4A4A4A",
-                  borderColor: "#00D1B2",
-                  color: "#FFFFFF",
-                }}
+                className="border p-3 rounded w-full bg-muted border-border text-muted-foreground"
               />
             </div>
 
             {/* Area Name Field */}
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-2" style={{ color: "#FFFFFF" }}>
+              <label className="block text-sm font-medium mb-2 text-card-foreground">
                 Area Name
               </label>
               <input
@@ -365,24 +352,19 @@ const handleCitySearch = async () => {
                 value={address}
                 readOnly
                 placeholder="Area name will appear here..."
-                className="border-2 p-3 rounded w-full"
-                style={{
-                  backgroundColor: "#4A4A4A",
-                  borderColor: "#00D1B2",
-                  color: "#FFFFFF",
-                }}
+                className="border p-3 rounded w-full bg-muted border-border text-muted-foreground"
               />
             </div>
           </div>
 
           {/* Right Column - Map and Lock */}
-          <div className="p-6 rounded-lg border-2" style={{ backgroundColor: "#0F1F2B", borderColor: "#00D1B2" }}>
+          <div className="card p-6 rounded-lg border border-border">
             {/* Map Component */}
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-3" style={{ color: "#FFFFFF" }}>
+              <label className="block text-sm font-medium mb-3 text-card-foreground">
                 Drag the Pin to Your Locality
               </label>
-              <div className="relative w-full h-80 rounded-lg overflow-hidden border-2" style={{ borderColor: "#00D1B2" }}>
+              <div className="relative w-full h-80 rounded-lg overflow-hidden border border-border">
                 <MapContainer
                   center={mapCenter}
                   zoom={13}
@@ -425,17 +407,17 @@ const handleCitySearch = async () => {
             </div>
 
             {/* Lock Location Checkbox */}
-            <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: "#081A2B" }}>
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted">
               <input
                 type="checkbox"
                 id="lock"
                 checked={isLocked}
                 onChange={(e) => setIsLocked(e.target.checked)}
                 disabled={!markerPos}
-                className="border-2"
-                style={{ borderColor: "#00D1B2", width: "20px", height: "20px" }}
+                className="border border-border"
+                style={{ width: "20px", height: "20px" }}
               />
-              <label htmlFor="lock" className="text-sm font-medium cursor-pointer" style={{ color: "#FFFFFF" }}>
+              <label htmlFor="lock" className="text-sm font-medium cursor-pointer text-card-foreground">
                 Lock my location (This location won't change during form submission)
               </label>
             </div>
@@ -444,8 +426,8 @@ const handleCitySearch = async () => {
 
         {/* Photo Upload Section Below */}
         <div className="mb-6">
-          <div className="p-6 rounded-lg border-2" style={{ backgroundColor: "#0F1F2B", borderColor: "#00D1B2" }}>
-            <h2 className="text-2xl font-bold mb-6" style={{ color: "#00D1B2" }}>
+          <div className="card p-6 rounded-lg border border-border">
+            <h2 className="text-2xl font-bold mb-6 text-primary">
               📸 Photo & Description
             </h2>
 
@@ -453,8 +435,7 @@ const handleCitySearch = async () => {
             {preview ? (
               <div className="mb-6">
                 <div
-                  className="relative w-full h-48 rounded-lg overflow-hidden border-2 mb-4"
-                  style={{ borderColor: "#00D1B2" }}
+                  className="relative w-full h-48 rounded-lg overflow-hidden border border-border mb-4"
                 >
                   <img src={preview || "/placeholder.svg"} alt="Preview" className="w-full h-full object-cover" />
                   <button
@@ -469,7 +450,7 @@ const handleCitySearch = async () => {
                     Remove
                   </button>
                 </div>
-                <p style={{ color: "#FFFFFF" }} className="text-sm">
+                <p className="text-sm text-card-foreground">
                   Photo: {photo?.name}
                 </p>
               </div>
@@ -478,12 +459,7 @@ const handleCitySearch = async () => {
                 <button
                   type="button"
                   onClick={() => setShowPhotoOptions(!showPhotoOptions)}
-                  className="w-full p-8 rounded-lg border-2 border-dashed transition-all flex flex-col items-center justify-center gap-3"
-                  style={{
-                    borderColor: "#00D1B2",
-                    backgroundColor: "#081A2B",
-                    color: "#00D1B2",
-                  }}
+                  className="w-full p-8 rounded-lg border border-dashed border-primary bg-input text-primary transition-all flex flex-col items-center justify-center gap-3"
                 >
                   <span className="text-3xl">📷</span>
                   <span className="font-semibold">Click to Upload Photo</span>
@@ -494,16 +470,14 @@ const handleCitySearch = async () => {
                     <button
                       type="button"
                       onClick={handleCamera}
-                      className="flex-1 py-2 rounded"
-                      style={{ backgroundColor: "#00D1B2", color: "#081A2B" }}
+                      className="button-primary flex-1 py-2 rounded"
                     >
                        Camera
                     </button>
                     <button
                       type="button"
                       onClick={handleUploadFromDevice}
-                      className="flex-1 py-2 rounded"
-                      style={{ backgroundColor: "#00D1B2", color: "#081A2B" }}
+                      className="button-primary flex-1 py-2 rounded"
                     >
                        Device
                     </button>
@@ -538,7 +512,7 @@ const handleCitySearch = async () => {
 
             {/* Caption Section */}
             <div className="flex-1 flex flex-col">
-              <label className="block text-sm font-medium mb-2" style={{ color: "#FFFFFF" }}>
+              <label className="block text-sm font-medium mb-2 text-card-foreground">
                 Write a Caption (20-30 words)
               </label>
               <textarea
@@ -546,24 +520,19 @@ const handleCitySearch = async () => {
                 value={caption}
                 onChange={handleCaptionChange}
                 disabled={!photo}
-                className="flex-1 border-2 p-3 resize-none"
-                style={{
-                  backgroundColor: photo ? "#081A2B" : "#4A4A4A",
-                  borderColor: "#00D1B2",
-                  color: "#FFFFFF",
-                }}
+                className={`flex-1 border p-3 resize-none rounded ${photo ? "bg-input border-border text-card-foreground" : "bg-muted border-border text-muted-foreground"}`}
               />
 
               {/* Word Count */}
               <div className="mt-3 flex items-center justify-between">
-                <span style={{ color: "#FFFFFF" }} className="text-sm">
+                <span className="text-sm text-card-foreground">
                   Words:{" "}
-                  <span style={{ color: wordCount >= 20 && wordCount <= 30 ? "#00D1B2" : "#FF6B6B" }} className="font-bold">
+                  <span style={{ color: wordCount >= 20 && wordCount <= 30 ? "#4f46e5" : "#ef4444" }} className="font-bold">
                     {wordCount}
                   </span>
                   /30
                 </span>
-                <span style={{ color: isValidCaption ? "#00D1B2" : "#FF6B6B" }} className="text-sm font-semibold">
+                <span style={{ color: isValidCaption ? "#4f46e5" : "#ef4444" }} className="text-sm font-semibold">
                   {isValidCaption ? "✓ Valid" : wordCount < 20 ? `${20 - wordCount} more words` : "Too many words"}
                 </span>
               </div>
@@ -575,12 +544,8 @@ const handleCitySearch = async () => {
         <div className="flex justify-end gap-4">
           <button
             type="button"
-            className="px-6 py-2 border-2 bg-transparent rounded"
-            style={{
-              borderColor: "#00D1B2",
-              color: "#00D1B2",
-              backgroundColor: "transparent",
-            }}
+            className="px-6 py-2 border border-primary/40 text-primary bg-transparent rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/10"
+            disabled={isSubmitting}
             onClick={() => {
               setCity("");
               setMapCenter([22.7196, 75.8577]);
@@ -599,14 +564,36 @@ const handleCitySearch = async () => {
           </button>
           <button
             type="submit"
-            disabled={!city || !photo || !isValidCaption}
-            className="px-8 py-2 font-semibold text-lg rounded disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{
-              backgroundColor: isValidCaption && photo && city ? "#00D1B2" : "#4A4A4A",
-              color: "#081A2B",
-            }}
+            disabled={!city || !photo || !isValidCaption || isSubmitting}
+            aria-busy={isSubmitting}
+            aria-disabled={!city || !photo || !isValidCaption || isSubmitting}
+            className="button-primary px-8 py-2 font-semibold text-lg rounded disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
+            style={(!isValidCaption || !photo || !city || isSubmitting) ? { backgroundColor: "#94a3b8" } : undefined}
           >
-            Send Complaint
+            {isSubmitting && (
+              <svg
+                className="animate-spin h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <circle
+                  className="opacity-30"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-90"
+                  fill="currentColor"
+                  d="M22 12a10 10 0 0 0-10-10v4a6 6 0 0 1 6 6h4Z"
+                />
+              </svg>
+            )}
+            {isSubmitting ? "Sending..." : "Send Complaint"}
           </button>
         </div>
       </form>

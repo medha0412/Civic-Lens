@@ -40,8 +40,8 @@ const categories = [
 
 export function CategoriesSection() {
   return (
-    <section id="categories" className="py-20 px-4 -mt-20 sm:px-6 lg:px-8 bg-foreground">
-      <div className="max-w-6xl mx-auto text-center ">
+    <section id="categories" className="py-20 px-4 -mt-20 sm:px-6 lg:px-8 bg-transparent">
+      <div className="section max-w-6xl mx-auto text-center p-8 sm:p-10 border border-border">
         {/* Section Header */}
         <div className="text-center mb-16 animate-slide-up">
           <h2 className="text-4xl sm:text-5xl font-bold text-secondary mb-4 text-balance">Types of Civic Issues</h2>
@@ -55,7 +55,7 @@ export function CategoriesSection() {
             return (
               <div key={index} className={`animate-slide-up-${Math.min(Math.floor(index / 2) + 1, 4)}`}>
                 <Card
-                  className={`relative overflow-hidden border ${category.borderColor} hover:shadow-xl transition-all duration-300 cursor-pointer bg-card hover:scale-105 rounded-xl glow-on-hover h-64`}
+                  className={`card relative overflow-hidden border ${category.borderColor} hover:shadow-xl transition-all duration-300 cursor-pointer bg-card hover:scale-105 rounded-xl h-64`}
                 >
                   {/* Background Image */}
                   <img 

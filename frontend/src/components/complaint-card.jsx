@@ -1,27 +1,8 @@
 "use client"
 import { Calendar, Tag, AlertCircle, Clock, CheckCircle, Image as ImageIcon } from "lucide-react"
 
-interface ComplaintCardProps {
-  complaint: {
-    _id?: string
-    id?: number
-    message: string
-    category: string
-    createdAt: string
-    status: string
-    photo?: string
-    city?: string
-    createdBy?: {
-      name: string
-      email: string
-      city: string
-    }
-  }
-  onTakeAction: (complaint: any) => void
-}
-
-export default function ComplaintCard({ complaint, onTakeAction, onViewPhoto }: any) {
-  const getStatusIcon = (status: string) => {
+export default function ComplaintCard({ complaint, onTakeAction, onViewPhoto }) {
+  const getStatusIcon = (status) => {
     switch (status) {
       case "pending":
         return <Clock className="w-4 h-4 text-accent" />
@@ -34,7 +15,7 @@ export default function ComplaintCard({ complaint, onTakeAction, onViewPhoto }: 
     }
   }
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status) => {
     switch (status) {
       case "pending":
         return "bg-yellow-500/10 text-yellow-400 border-yellow-500/20"
@@ -47,7 +28,7 @@ export default function ComplaintCard({ complaint, onTakeAction, onViewPhoto }: 
     }
   }
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
   }
@@ -56,7 +37,7 @@ export default function ComplaintCard({ complaint, onTakeAction, onViewPhoto }: 
     <div className="bg-card border border-border rounded-lg p-6 shadow-md hover:shadow-lg transition-all hover:border-accent/30">
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
-          <h3 className="text-lg font-bold text-foreground mb-2">{complaint.message}</h3>
+          <h3 className="text-lg font-bold text-card-foreground mb-2">{complaint.message}</h3>
           {complaint.city && <p className="text-muted-foreground text-sm mb-1">📍 {complaint.city}</p>}
         </div>
         <div
@@ -90,7 +71,7 @@ export default function ComplaintCard({ complaint, onTakeAction, onViewPhoto }: 
 
         <button
           onClick={() => onTakeAction(complaint)}
-          className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold py-2 px-4 rounded-lg transition-colors"
+          className="flex-1 button-primary font-semibold py-2 px-4 rounded-lg transition-colors"
         >
           Take Action
         </button>

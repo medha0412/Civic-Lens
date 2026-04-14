@@ -4,8 +4,8 @@ import civicLensLogo from "../assets/CIVIC_LENS.png"
 
 export function Footer() {
   return (
-    <footer className="bg-foreground border-t border-border/50 py-12 px-4 sm:px-6 lg:px-8 shadow-2xl">
-      <div className="max-w-6xl mx-auto">
+    <footer className="bg-transparent py-12 px-4 sm:px-6 lg:px-8">
+      <div className="section max-w-6xl mx-auto p-8 sm:p-10 border border-border">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div>
@@ -17,27 +17,27 @@ export function Footer() {
                          className="h-36 w-40 transition-all duration-300 group-hover:scale-110"
                        />
                      </div>
-            <p className="text-sm text-background leading-relaxed">
+            <p className="text-sm text-card-foreground leading-relaxed">
               Building better communities, one report at a time.
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="font-semibold text-background mb-4">Product</h4>
+            <h4 className="font-semibold text-card-foreground mb-4">Product</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-background hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="text-muted-foreground hover:text-accent transition-colors duration-300 font-medium">
                   Features
                 </a>
               </li>
               <li>
-                <a href="#" className="text-background hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="text-muted-foreground hover:text-accent transition-colors duration-300 font-medium">
                   Pricing
                 </a>
               </li>
               <li>
-                <a href="#" className="text-background hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="text-muted-foreground hover:text-accent transition-colors duration-300 font-medium">
                   Security
                 </a>
               </li>
@@ -46,20 +46,20 @@ export function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="font-semibold text-background mb-4">Resources</h4>
+            <h4 className="font-semibold text-card-foreground mb-4">Resources</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-background hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="text-muted-foreground hover:text-accent transition-colors duration-300 font-medium">
                   Blog
                 </a>
               </li>
               <li>
-                <a href="#" className="text-background hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="text-muted-foreground hover:text-accent transition-colors duration-300 font-medium">
                   FAQ
                 </a>
               </li>
               <li>
-                <a href="#" className="text-background hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="text-muted-foreground hover:text-accent transition-colors duration-300 font-medium">
                   Support
                 </a>
               </li>
@@ -68,20 +68,20 @@ export function Footer() {
 
           {/* Social */}
           <div>
-            <h4 className="font-semibold text-background mb-4">Follow Us</h4>
+            <h4 className="font-semibold text-card-foreground mb-4">Follow Us</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-background hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="text-muted-foreground hover:text-accent transition-colors duration-300 font-medium">
                   Twitter
                 </a>
               </li>
               <li>
-                <a href="#" className="text-background hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="text-muted-foreground hover:text-accent transition-colors duration-300 font-medium">
                   Facebook
                 </a>
               </li>
               <li>
-                <a href="#" className="text-background hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="text-muted-foreground hover:text-accent transition-colors duration-300 font-medium">
                   Instagram
                 </a>
               </li>
@@ -89,11 +89,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-border/50 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-foreground/70">
-          <p className="flex items-center gap-1 text-background">
-            Made with <Heart className="w-4 h-4 text-background" /> for civic responsibility
+        <div className="border-t border-border/50 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+          <p className="flex items-center gap-1 text-card-foreground">
+            Made with <Heart className="w-4 h-4 text-card-foreground" /> for civic responsibility
           </p>
-          <p className="text-background">© 2025 Civic Lens. All rights reserved.</p>
+          <p className="text-card-foreground">© 2025 Civic Lens. All rights reserved.</p>
         </div>
       </div>
     </footer>

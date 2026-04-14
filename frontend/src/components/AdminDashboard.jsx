@@ -5,7 +5,6 @@ import { X, CheckCircle, Clock, AlertCircle, ArrowLeft } from "lucide-react"
 import Sidebar from "./sidebar"
 import ComplaintCard from "./complaint-card"
 import StatusModal from "./status-modal"
-import "../styles/civiclens-theme.css";
 import { useNavigate } from "react-router-dom"
 import { API_ENDPOINTS, getFullUrl } from "../config/api"
 
@@ -27,12 +26,7 @@ const navigate = useNavigate();
       <div className="absolute top-4 left-4 z-10">
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors"
-          style={{
-            backgroundColor: 'rgba(0, 209, 178, 0.1)',
-            color: '#00D1B2',
-            border: '1px solid rgba(0, 209, 178, 0.3)',
-          }}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors border border-border bg-card text-card-foreground hover:bg-muted"
         >
           <ArrowLeft size={20} />
           Back
@@ -184,20 +178,20 @@ const navigate = useNavigate();
   // ✅ Loading & error states
   if (loading)
     return (
-      <div className="flex h-screen items-center justify-center text-xl text-gray-300 bg-[#081A2B]">
+      <div className="flex h-screen items-center justify-center text-xl text-background bg-transparent">
         Loading complaints...
       </div>
     )
 
   if (error)
     return (
-      <div className="flex h-screen  items-center justify-center text-xl text-red-400 bg-[#081A2B]">
+      <div className="flex h-screen  items-center justify-center text-xl text-destructive bg-transparent">
         Error: {error}
       </div>
     )
 
   return (
-    <div className="civiclens-theme  dark min-h-screen bg-[#081A2B] text-white flex">
+    <div className="min-h-screen bg-transparent text-background flex">
       <BackButton />
       {/* Sidebar */}
       <Sidebar
@@ -215,52 +209,52 @@ const navigate = useNavigate();
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
         {/* Header */}
-        <div className="bg-[#0B253D] border-b border-[#00D1B2]/30 p-8">
-          <h1 className="text-4xl font-bold text-[#00D1B2] mb-2">
+        <div className="section border border-border p-8 m-6 rounded-2xl">
+          <h1 className="text-4xl font-bold text-primary mb-2">
             CivicLens Admin Dashboard
           </h1>
-          <p className="text-gray-300">
+          <p className="text-muted-foreground">
             Manage and track civic complaints efficiently
           </p>
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-3 gap-6 p-8">
-          <div className="bg-[#0E2D4A] rounded-lg p-6 border border-[#00D1B2]/40 shadow-lg">
+        <div className="grid grid-cols-3 gap-6 px-6">
+          <div className="card rounded-lg p-6 border border-border shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-400 mb-1">Pending</p>
-                <p className="text-3xl font-bold text-[#00D1B2]">{stats.pending}</p>
+                <p className="text-sm text-muted-foreground mb-1">Pending</p>
+                <p className="text-3xl font-bold text-primary">{stats.pending}</p>
               </div>
-              <Clock className="w-8 h-8 text-[#00D1B2]" />
+              <Clock className="w-8 h-8 text-primary" />
             </div>
           </div>
 
-          <div className="bg-[#0E2D4A] rounded-lg p-6 border border-[#00D1B2]/40 shadow-lg">
+          <div className="card rounded-lg p-6 border border-border shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-400 mb-1">In Progress</p>
-                <p className="text-3xl font-bold text-[#00D1B2]">{stats.inProgress}</p>
+                <p className="text-sm text-muted-foreground mb-1">In Progress</p>
+                <p className="text-3xl font-bold text-primary">{stats.inProgress}</p>
               </div>
-              <AlertCircle className="w-8 h-8 text-[#00D1B2]" />
+              <AlertCircle className="w-8 h-8 text-primary" />
             </div>
           </div>
 
-          <div className="bg-[#0E2D4A] rounded-lg p-6 border border-[#00D1B2]/40 shadow-lg">
+          <div className="card rounded-lg p-6 border border-border shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-400 mb-1">Resolved</p>
-                <p className="text-3xl font-bold text-[#00D1B2]">{stats.resolved}</p>
+                <p className="text-sm text-muted-foreground mb-1">Resolved</p>
+                <p className="text-3xl font-bold text-primary">{stats.resolved}</p>
               </div>
-              <CheckCircle className="w-8 h-8 text-[#00D1B2]" />
+              <CheckCircle className="w-8 h-8 text-primary" />
             </div>
           </div>
         </div>
 
         {/* Complaints List */}
-        <div className="p-8">
+        <div className="section p-8 m-6 rounded-2xl border border-border">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-[#00D1B2]">
+            <h2 className="text-2xl font-bold text-primary">
               Complaints ({filteredComplaints.length})
             </h2>
             {(selectedCategory !== "All" ||
@@ -272,7 +266,7 @@ const navigate = useNavigate();
                   setSelectedStatus("All")
                   setSelectedDateRange("All")
                 }}
-                className="flex items-center gap-2 px-4 py-2 bg-[#00D1B2]/20 hover:bg-[#00D1B2]/30 rounded-lg"
+                className="flex items-center gap-2 px-4 py-2 bg-primary/15 hover:bg-primary/25 text-primary rounded-lg transition-colors"
               >
                 <X className="w-4 h-4" /> Clear Filters
               </button>
@@ -291,8 +285,8 @@ const navigate = useNavigate();
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-[#0E2D4A] rounded-lg border border-[#00D1B2]/30">
-              <p className="text-gray-400 text-lg">
+            <div className="text-center py-12 card rounded-lg border border-border">
+              <p className="text-muted-foreground text-lg">
                 No complaints match your filters
               </p>
             </div>
@@ -316,10 +310,10 @@ const navigate = useNavigate();
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="bg-card border border-border rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-border">
-              <h3 className="text-lg font-bold text-foreground">Complaint Photo</h3>
+              <h3 className="text-lg font-bold text-card-foreground">Complaint Photo</h3>
               <button
                 onClick={() => { setIsPhotoOpen(false); setPhotoUrl(null) }}
-                className="p-1 hover:bg-secondary rounded transition-colors"
+                className="p-1 hover:bg-secondary rounded transition-colors text-card-foreground"
               >
                 ✕
               </button>

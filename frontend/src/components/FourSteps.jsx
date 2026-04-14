@@ -41,8 +41,8 @@ const steps = [
 
 export function FourStepsSection() {
   return (
-    <section id="how-it-works" className="py-20 px-4 bg-foreground -mt-14 sm:px-6 lg:px-8 bg-muted/50">
-      <div className="max-w-6xl mx-auto ">
+    <section id="how-it-works" className="py-20 px-4 bg-transparent -mt-14 sm:px-6 lg:px-8">
+      <div className="section max-w-6xl mx-auto p-8 sm:p-10 border border-border">
         {/* Section Header */}
         <div className="text-center mb-16 animate-slide-up">
           <h2 className="text-5xl sm:text-5xl font-bold text-secondary mb-4 text-balance">How Civic Lens Works</h2>
@@ -54,7 +54,7 @@ export function FourStepsSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
           {steps.map((step, index) => (
             <div key={step.number} className={`animate-slide-up-${Math.min(index + 1, 4)}`}>
-              <Card className="border border-border/50 hover:border-accent/30 transition-all duration-300 hover:shadow-xl hover:scale-105 bg-muted rounded-xl glow-on-hover overflow-hidden h-full flex flex-col">
+              <Card className="card border border-border/50 hover:border-accent/30 transition-all duration-300 hover:shadow-xl hover:scale-105 bg-muted rounded-xl overflow-hidden h-full flex flex-col">
                 {/* Full-width image at the top */}
                 <img
                   src={step.icon}

@@ -31,7 +31,7 @@ export default function Sidebar({
           <div className="bg-accent p-2 rounded-lg">
             <Filter className="w-5 h-5 text-accent-foreground" />
           </div>
-          <h3 className="text-xl font-bold text-foreground">Filters</h3>
+          <h3 className="text-xl font-bold text-card-foreground">Filters</h3>
         </div>
 
         {/* Category Filter */}
@@ -42,7 +42,7 @@ export default function Sidebar({
           <select
             value={selectedCategory}
             onChange={(e) => onCategoryChange(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg bg-secondary text-foreground border border-border hover:border-accent transition-colors focus:outline-none focus:ring-2 focus:ring-accent font-medium"
+            className="w-full px-4 py-2 rounded-lg bg-secondary text-card-foreground border border-border hover:border-accent transition-colors focus:outline-none focus:ring-2 focus:ring-accent font-medium"
           >
             {categories.map((category) => (
               <option key={category} value={category}>
@@ -65,7 +65,7 @@ export default function Sidebar({
                 className={`w-full text-left px-4 py-2 rounded-lg transition-colors font-medium ${
                   selectedStatus === status
                     ? "bg-accent text-accent-foreground"
-                    : "bg-secondary hover:bg-secondary/80 text-foreground"
+                    : "bg-secondary hover:bg-secondary/80 text-card-foreground"
                 }`}
               >
                 {status}
@@ -87,7 +87,7 @@ export default function Sidebar({
                 className={`w-full text-left px-4 py-2 rounded-lg transition-colors font-medium ${
                   selectedDateRange === dateRange
                     ? "bg-accent text-accent-foreground"
-                    : "bg-secondary hover:bg-secondary/80 text-foreground"
+                    : "bg-secondary hover:bg-secondary/80 text-card-foreground"
                 }`}
               >
                 {dateRange}

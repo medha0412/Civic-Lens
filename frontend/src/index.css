@@ -8,74 +8,40 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.98 0 0);
-  --foreground: oklch(0.155 0.01 240);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.155 0.01 240);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.155 0.01 240);
-  --primary: oklch(0.225 0.1 240);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.55 0.15 200);
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.22 0.02 240);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.55 0.15 200);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.93 0 0);
-  --input: oklch(0.96 0 0);
-  --ring: oklch(0.225 0.1 240);
-  --chart-1: oklch(0.225 0.1 240);
-  --chart-2: oklch(0.55 0.15 200);
-  --chart-3: oklch(0.38 0.12 200);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.98 0 0);
-  --sidebar-foreground: oklch(0.155 0.01 240);
-  --sidebar-primary: oklch(0.225 0.1 240);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.55 0.15 200);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.93 0 0);
-  --sidebar-ring: oklch(0.225 0.1 240);
-}
-
-.dark {
-  --background: oklch(0.08 0 0); /* #0F172A - Deep navy background */
-  --foreground: oklch(0.96 0 0); /* #F1F5F9 - Bright white text */
-  --card: oklch(0.14 0.02 240); /* #1E293B - Dark card background */
-  --card-foreground: oklch(0.96 0 0); /* #F1F5F9 - Light text on cards */
-  --popover: oklch(0.14 0.02 240);
-  --popover-foreground: oklch(0.96 0 0);
-  --primary: oklch(0.15 0.08 240); /* #081A2B - Deep blue for buttons and headers */
-  --primary-foreground: oklch(0.96 0 0); /* White text on buttons */
-  --secondary: oklch(0.56 0.2 190); /* #00D1B2 - Vibrant teal accent */
-  --secondary-foreground: oklch(0.08 0 0); /* Dark text on teal */
-  --muted: oklch(0.22 0.02 240); /* Slightly lighter than background for contrast */
-  --muted-foreground: oklch(0.8 0 0); /* Medium gray text */
-  --accent: oklch(0.56 0.2 190); /* #00D1B2 - Teal highlight */
-  --accent-foreground: oklch(0.08 0 0);
-  --destructive: oklch(0.465 0.194 26.202); /* #EF4444 - Red for errors */
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.2 0.02 240); /* Subtle dark borders */
-  --input: oklch(0.18 0.01 240); /* Dark input backgrounds */
-  --ring: oklch(0.56 0.2 190); /* Teal ring for focus states */
-  --chart-1: oklch(0.15 0.08 240);
-  --chart-2: oklch(0.56 0.2 190);
-  --chart-3: oklch(0.7 0.15 200);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.14 0.02 240);
-  --sidebar-foreground: oklch(0.96 0 0);
-  --sidebar-primary: oklch(0.15 0.08 240);
-  --sidebar-primary-foreground: oklch(0.96 0 0);
-  --sidebar-accent: oklch(0.56 0.2 190);
-  --sidebar-accent-foreground: oklch(0.08 0 0);
-  --sidebar-border: oklch(0.2 0.02 240);
-  --sidebar-ring: oklch(0.56 0.2 190);
+  --background: #1e293b;
+  /* slightly more bluish light shade */
+  --foreground: #8bb5fe;
+  --card: rgba(255, 255, 255, 0.65);
+  --card-foreground: #1e293b;
+  --popover: #ffffff;
+  --popover-foreground: #1e293b;
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --secondary: #818cf8;
+  --secondary-foreground: #ffffff;
+  --accent: #6366f1;
+  --accent-foreground: #ffffff;
+  --muted: #eef4ff;
+  --muted-foreground: #64748b;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #d6e3ff;
+  --input: #f2f7ff;
+  --ring: #6366f1;
+  --chart-1: #4f46e5;
+  --chart-2: #818cf8;
+  --chart-3: #a5b4fc;
+  --chart-4: #c7d2fe;
+  --chart-5: #e0e7ff;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1e293b;
+  --sidebar-primary: #4f46e5;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #818cf8;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #6366f1;
 }
 
 @theme inline {
@@ -171,46 +137,63 @@
   }
 }
 
-@keyframes glow-teal {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(0, 209, 178, 0), 0 2px 8px rgba(0, 209, 178, 0.1);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(0, 209, 178, 0.4), 0 2px 16px rgba(0, 209, 178, 0.2);
-  }
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(79, 70, 229, 0.50), transparent 46%),
+    radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.44), transparent 44%),
+    radial-gradient(circle at 50% 80%, rgba(111, 164, 255, 0.34), transparent 58%),
+    linear-gradient(135deg, #c5d9ff, #6fa4ff);
+  background-attachment: fixed;
 }
 
-@keyframes glow-button-deep-blue {
-  0%,
-  100% {
-    box-shadow: 0 2px 12px rgba(8, 26, 43, 0.3);
-  }
-  50% {
-    box-shadow: 0 4px 24px rgba(0, 209, 178, 0.3), 0 0 20px rgba(0, 209, 178, 0.2);
-  }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.section {
+  background: rgba(234, 241, 255, 0.52);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid rgba(79, 70, 229, 0.10);
+}
+
+.card {
+  background: linear-gradient(
+    135deg,
+    rgba(234, 241, 255, 0.82),
+    rgba(219, 231, 255, 0.55)
+  ) !important;
+  backdrop-filter: blur(16px);
+  border-radius: 18px;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow:
+    0 10px 30px rgba(79, 70, 229, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+.card h2 {
+  color: #4338ca;
+}
+
+.button-primary {
+  background: #4f46e5;
+  color: #ffffff;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.button-primary:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
 }
 
 @layer utilities {
-  /* Updated glow utilities for dark professional theme */
-  .glow-on-hover {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(0, 209, 178, 0.1);
-  }
-
-  .glow-on-hover:hover {
-    animation: glow-teal 2s ease-in-out;
-  }
-
-  .glow-button-primary {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(0, 209, 178, 0.2);
-  }
-
-  .glow-button-primary:hover {
-    animation: glow-button-deep-blue 2s ease-in-out;
-  }
-
   .animate-fade-in {
     animation: fade-in 0.8s ease-out forwards;
   }

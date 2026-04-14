@@ -15,6 +15,7 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
   });
 
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,10 +24,12 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
     if (!formData.name || !formData.email || !formData.city || !formData.password) {
       setError("Please fill in all fields before registering");
       return;
     }
+    setIsSubmitting(true);
     try {
       const res = await axios.post(API_ENDPOINTS.SIGNUP, formData);
       alert(res.data.message);
@@ -47,6 +50,8 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
       navigate('/dashboard');
     } catch (error) {
       alert(error.response?.data?.message || "Signup failed");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -55,20 +60,21 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 px-4">
-      <h1 className="text-4xl font-bold mb-8 text-white">Create Your Account</h1>
+    <div className="min-h-screen flex flex-col justify-center items-center bg-transparent px-4 py-10">
+      <div className="section w-full max-w-md p-8 border border-border">
+      <h1 className="text-4xl font-bold mb-8 text-card-foreground text-center">Create Your Account</h1>
 
-      <div className="bg-white/5 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-white/10">
+      <div className="card p-8 rounded-2xl shadow-2xl w-full border border-border">
 
         {/* ERROR */}
         {error && (
-          <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-300 text-sm">
+          <div className="mb-4 p-3 bg-destructive/10 border border-destructive/30 rounded-lg text-destructive text-sm">
             {error}
           </div>
         )}
 
         {/* FORM START */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} aria-busy={isSubmitting}>
 
           <input
             type="text"
@@ -76,7 +82,7 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
             value={formData.name}
             onChange={handleChange}
             placeholder="Enter your name"
-            className="w-full mb-4 p-3 bg-white/10 border border-white/20 rounded-lg text-white"
+            className="w-full mb-4 p-3 bg-input border border-border rounded-lg text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
 
           <input
@@ -85,7 +91,7 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
             value={formData.email}
             onChange={handleChange}
             placeholder="Enter your email"
-            className="w-full mb-4 p-3 bg-white/10 border border-white/20 rounded-lg text-white"
+            className="w-full mb-4 p-3 bg-input border border-border rounded-lg text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
 
           <input
@@ -94,7 +100,7 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
             value={formData.city}
             onChange={handleChange}
             placeholder="Enter your city"
-            className="w-full mb-4 p-3 bg-white/10 border border-white/20 rounded-lg text-white"
+            className="w-full mb-4 p-3 bg-input border border-border rounded-lg text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
 
           <input
@@ -103,31 +109,45 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
             value={formData.password}
             onChange={handleChange}
             placeholder="Enter your password"
-            className="w-full mb-6 p-3 bg-white/10 border border-white/20 rounded-lg text-white"
+            className="w-full mb-6 p-3 bg-input border border-border rounded-lg text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
 
           {/* REGISTER BUTTON */}
           <button
             type="submit"
-            className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-cyan-500 transition"
+            disabled={isSubmitting}
+            aria-busy={isSubmitting}
+            className="w-full button-primary py-3 rounded-lg font-semibold transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
           >
-            Register
+            {isSubmitting && (
+              <svg
+                className="animate-spin h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-30" />
+                <path className="opacity-90" fill="currentColor" d="M22 12a10 10 0 0 0-10-10v4a6 6 0 0 1 6 6h4Z" />
+              </svg>
+            )}
+            {isSubmitting ? "Registering..." : "Register"}
           </button>
         </form>
         {/* FORM END */}
 
         {/* DIVIDER */}
         <div className="flex items-center justify-center my-6">
-          <span className="h-[1px] bg-white/20 w-1/4"></span>
-          <span className="px-3 text-gray-400 text-sm">or</span>
-          <span className="h-[1px] bg-white/20 w-1/4"></span>
+          <span className="h-[1px] bg-border w-1/4"></span>
+          <span className="px-3 text-muted-foreground text-sm">or</span>
+          <span className="h-[1px] bg-border w-1/4"></span>
         </div>
 
         {/* GOOGLE BUTTON — OUTSIDE FORM */}
         <button
           type="button"
           onClick={googleSignup}
-          className="w-full flex items-center justify-center gap-2 bg-white/10 border border-white/20 py-2.5 rounded-lg hover:bg-white/20 transition text-white font-medium"
+          className="w-full flex items-center justify-center gap-2 bg-card border border-border py-2.5 rounded-lg hover:bg-muted transition text-card-foreground font-medium"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -139,10 +159,11 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
         </button>
 
       </div>
+      </div>
 
-      <p className="mt-6 text-lg text-white">
+      <p className="mt-6 text-lg text-card-foreground">
         Already have an account?{" "}
-        <a href="/login" className="text-cyan-400 hover:underline">
+        <a href="/login" className="text-primary hover:underline">
           Log In
         </a>
       </p>
