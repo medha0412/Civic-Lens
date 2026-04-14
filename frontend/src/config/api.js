@@ -2,17 +2,26 @@
 // This file centralizes all API endpoint configuration
 
 const inferBackendUrl = () => {
+  const normalizeBaseUrl = (urlValue) => {
+    if (!urlValue) return '';
+    let candidate = String(urlValue).trim();
+    if (!/^https?:\/\//i.test(candidate)) {
+      candidate = `https://${candidate}`;
+    }
+    return candidate.replace(/\/+$/, '');
+  };
+
   const envUrl = import.meta.env.VITE_BACKEND_URL;
-  if (envUrl) return envUrl;
+  if (envUrl) return normalizeBaseUrl(envUrl);
 
   if (typeof window !== 'undefined') {
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (!isLocalhost) {
-      return 'https://civic-lens-1-23jq.onrender.com';
+      return normalizeBaseUrl('https://civic-lens-1-23jq.onrender.com');
     }
   }
 
-  return 'http://localhost:5000';
+  return normalizeBaseUrl('http://localhost:5000');
 };
 
 const API_BASE_URL = inferBackendUrl();

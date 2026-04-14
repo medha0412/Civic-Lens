@@ -10,25 +10,45 @@ dotenv.config();
 
 const app = express();
 
+const normalizeOrigin = (value) => {
+  if (!value) return null;
+  let candidate = String(value).trim();
+  if (!candidate) return null;
+  if (!/^https?:\/\//i.test(candidate)) {
+    candidate = `https://${candidate}`;
+  }
+  try {
+    const parsed = new URL(candidate);
+    return `${parsed.protocol}//${parsed.host}`;
+  } catch {
+    return null;
+  }
+};
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
   origin: (origin, callback) => {
-    const allowedOrigins = [
+    const allowedOrigins = new Set(
+      [
       "http://localhost:5173",
       "http://localhost:3000",
       process.env.FRONTEND_URL,
       "https://civiclens-major.netlify.app" // Netlify production URL
-    ].filter(Boolean); // Remove any undefined values
+      ]
+        .map(normalizeOrigin)
+        .filter(Boolean)
+    );
     
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) {
       return callback(null, true);
     }
-    
-    if (allowedOrigins.includes(origin)) {
+
+    const normalizedRequestOrigin = normalizeOrigin(origin);
+    if (normalizedRequestOrigin && allowedOrigins.has(normalizedRequestOrigin)) {
       callback(null, true);
     } else {
       console.warn(`CORS blocked origin: ${origin}`);
