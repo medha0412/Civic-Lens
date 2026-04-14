@@ -10,7 +10,6 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    city: "",
     password: "",
   });
 
@@ -25,13 +24,14 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
-    if (!formData.name || !formData.email || !formData.city || !formData.password) {
+    if (!formData.name || !formData.email || !formData.password) {
       setError("Please fill in all fields before registering");
       return;
     }
     setIsSubmitting(true);
     try {
-      const res = await axios.post(API_ENDPOINTS.SIGNUP, formData);
+      const signupPayload = { ...formData, city: "Not specified" };
+      const res = await axios.post(API_ENDPOINTS.SIGNUP, signupPayload);
       alert(res.data.message);
 
       navigate("/dashboard");
@@ -91,15 +91,6 @@ export  function Signup({ setIsLoggedIn, setUserRole }) {
             value={formData.email}
             onChange={handleChange}
             placeholder="Enter your email"
-            className="w-full mb-4 p-3 bg-input border border-border rounded-lg text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          />
-
-          <input
-            type="text"
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-            placeholder="Enter your city"
             className="w-full mb-4 p-3 bg-input border border-border rounded-lg text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
 
